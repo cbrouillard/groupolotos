@@ -6,14 +6,17 @@ class Session {
 
     String id
 
+    String name
+
     Date date = new Date()
     Boolean open = true
     Double gains = 0D;
 
     static constraints = {
-        date nullable:false
-        open nullable:false
-        gains nullable:false
+        date nullable: false
+        open nullable: false
+        gains nullable: false
+        name nullable: false
     }
 
     static mapping = {

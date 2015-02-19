@@ -32,7 +32,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <g:link controller="session" action="index" class="navbar-brand"><g:message code="app.name"/></g:link>
+
+            <g:link controller="session" action="index" class="navbar-brand"><g:message
+                    code="app.name"/></g:link>
+
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -47,11 +50,12 @@
 
                         <li>
                             <g:link controller="session" action="index">
-                                <span class="glyphicon glyphicon-user"></span> <g:message code="session.list"/></g:link>
+                                <span class="glyphicon glyphicon-euro"></span> <g:message code="session.list"/></g:link>
                         </li>
                         <li>
                             <g:link controller="session" action="create">
-                                <span class="glyphicon glyphicon-user"></span> <g:message code="session.create"/></g:link>
+                                <span class="glyphicon glyphicon-euro"></span> <g:message
+                                    code="session.create"/></g:link>
                         </li>
 
                         <li class="divider"></li>
