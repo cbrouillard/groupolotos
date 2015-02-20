@@ -14,7 +14,7 @@ class Player {
         lastname nullable:false, blank:false
         firstname nullable:false, blank:false
         email nullable:false, blank:false, email: true, unique: true
-        current nullable:false
+        current nullable:false, defaultValue: 0D
     }
 
     static mapping = {
