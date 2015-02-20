@@ -126,6 +126,7 @@ grails.plugin.springsecurity.authority.className = 'com.cyrils.groupoloto.domain
 grails.plugin.springsecurity.securityConfigType = "Annotation"
 grails.plugin.springsecurity.rejectIfNoRule = false
 grails.plugin.springsecurity.fii.rejectPublicInvocations = false
+grails.plugin.springsecurity.logout.postOnly = false
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/':                              ['permitAll'],
 	'/index':                         ['permitAll'],
