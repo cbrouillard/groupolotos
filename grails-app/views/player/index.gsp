@@ -47,7 +47,21 @@
                              width="100px"/>
 
                         <div class="caption text-center">
-                            <strong>${player.firstname} ${player.lastname}</strong>
+                            <ul class="list-group">
+                                <li class="list-group-item"><strong>${player.firstname} ${player.lastname}</strong></li>
+                                <li class="list-group-item">${player.email}</li>
+                                <li class="list-group-item">En-cours : <g:formatNumber
+                                        number="${player.current}"/> €</li>
+                                <li class="list-group-item">
+                                    <g:link class="btn btn-danger" action="givemoney" controller="player"
+                                            id="${player.id}">
+                                        <span class="glyphicon glyphicon-euro"></span> <g:message
+                                            code="player.give.money"/>
+                                    </g:link>
+
+                                </li>
+                            </ul>
+
                         </div>
                     </div>
                 </div>

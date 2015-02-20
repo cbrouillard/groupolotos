@@ -23,6 +23,23 @@ class PlayerController {
     }
 
     @Transactional
+    def givemoney() {
+        Player player = Player.get(params.id)
+        if (player) {
+
+            if (player.current != 0D){
+                // todo envoyer un mail
+            }
+
+            player.current = 0D
+            player.save flush: true
+        }
+
+        redirect action: 'index'
+        return
+    }
+
+    @Transactional
     def save(Player playerInstance) {
         if (playerInstance == null) {
             notFound()

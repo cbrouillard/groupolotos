@@ -2,18 +2,19 @@ package com.cyrils.groupoloto.domain
 
 class Player {
 
-    static belongsTo = [Session]
-
     String id
 
     String lastname
     String firstname
     String email
 
+    Double current = 0D
+
     static constraints = {
         lastname nullable:false, blank:false
         firstname nullable:false, blank:false
-        email nullable:false, blank:false, email: true
+        email nullable:false, blank:false, email: true, unique: true
+        current nullable:false
     }
 
     static mapping = {

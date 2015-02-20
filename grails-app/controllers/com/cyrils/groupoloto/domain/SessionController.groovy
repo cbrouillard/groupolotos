@@ -35,6 +35,7 @@ class SessionController {
             redirect controller: 'session'
         } else {
             session.players.add(player)
+            player.current -= 2
             session.save flush: true
             redirect action: 'show', id: session.id
         }
@@ -83,6 +84,34 @@ class SessionController {
             redirect action: 'show', id: session.id
         }
 
+        return
+    }
+
+    @Transactional
+    def win(){
+        Session session = Session.findById(params.sessionId)
+        if (session){
+
+            def previousSavedGains = session.gains
+
+            bindData(session, params, [include:["gains"]])
+
+            def players = session.players
+            if (players){
+                def eachPlayersGains = new Double ((session.gains - previousSavedGains) / players.size())
+                players.each {p ->
+                    p.current += eachPlayersGains
+                }
+
+                // todo envoyer un mail à tous les joueurs
+            }
+
+            session.save(flush: true)
+            redirect action: 'show', id:session.id
+            return
+        }
+
+        redirect action:'index'
         return
     }
 
