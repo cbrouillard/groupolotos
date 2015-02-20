@@ -29,21 +29,22 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-
-            <div class="form-inline pull-right">
-                <g:form url="[resource: sessionInstance, action: 'delete']" method="DELETE"
-                        class="form-inline pull-right">
-                    <fieldset class="buttons">
-                        %{--<g:link class="btn btn-warning" action="edit" resource="${sessionInstance}">
-                            <span class="glyphicon glyphicon-edit"></span> <g:message
-                                code="default.button.edit.label"
-                                default="Edit"/></g:link>--}%
-                        <g:actionSubmit class="btn btn-danger" action="delete"
-                                        value="${message(code: 'default.button.delete.label', default: 'Delete')}"
-                                        onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
-                    </fieldset>
-                </g:form>
-            </div>
+            <sec:ifAllGranted roles="ROLE_ADMIN">
+                <div class="form-inline pull-right">
+                    <g:form url="[resource: sessionInstance, action: 'delete']" method="DELETE"
+                            class="form-inline pull-right">
+                        <fieldset class="buttons">
+                            %{--<g:link class="btn btn-warning" action="edit" resource="${sessionInstance}">
+                                <span class="glyphicon glyphicon-edit"></span> <g:message
+                                    code="default.button.edit.label"
+                                    default="Edit"/></g:link>--}%
+                            <g:actionSubmit class="btn btn-danger" action="delete"
+                                            value="${message(code: 'default.button.delete.label', default: 'Delete')}"
+                                            onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+                        </fieldset>
+                    </g:form>
+                </div>
+            </sec:ifAllGranted>
             <h5><g:message code="session.infos"/> '${sessionInstance.name}'</h5>
 
             <div class="clearfix"></div>
@@ -64,22 +65,22 @@
                 <td><g:formatBoolean
                         boolean="${sessionInstance?.open}"/></td>
                 <td class="text-right">
-
-                    <g:if test="${sessionInstance.open}">
-                        <g:link class="btn btn-warning btn-xs" action="close" controller="session"
-                                id="${sessionInstance.id}"><span
-                                class="glyphicon glyphicon-stop"></span>
-                            <g:message code="session.close"/>
-                        </g:link>
-                    </g:if>
-                    <g:else>
-                        <g:link class="btn btn-warning btn-xs" action="open" controller="session"
-                                id="${sessionInstance.id}"><span
-                                class="glyphicon glyphicon-play"></span>
-                            <g:message code="session.open"/>
-                        </g:link>
-                    </g:else>
-
+                    <sec:ifAllGranted roles="ROLE_ADMIN">
+                        <g:if test="${sessionInstance.open}">
+                            <g:link class="btn btn-warning btn-xs" action="close" controller="session"
+                                    id="${sessionInstance.id}"><span
+                                    class="glyphicon glyphicon-stop"></span>
+                                <g:message code="session.close"/>
+                            </g:link>
+                        </g:if>
+                        <g:else>
+                            <g:link class="btn btn-warning btn-xs" action="open" controller="session"
+                                    id="${sessionInstance.id}"><span
+                                    class="glyphicon glyphicon-play"></span>
+                                <g:message code="session.open"/>
+                            </g:link>
+                        </g:else>
+                    </sec:ifAllGranted>
                 </td>
             </tr>
             <tr>
@@ -104,14 +105,16 @@
                 </td>
 
                 <td class="text-right">
-                    <g:if test="${!sessionInstance.open}">
-                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal"
-                                data-target="#gainsModal">
-                            <span
-                                    class="glyphicon glyphicon-euro"></span>
-                            <g:message code="session.gains"/>
-                        </button>
-                    </g:if>
+                    <sec:ifAllGranted roles="ROLE_ADMIN">
+                        <g:if test="${!sessionInstance.open}">
+                            <button type="button" class="btn btn-success btn-xs" data-toggle="modal"
+                                    data-target="#gainsModal">
+                                <span
+                                        class="glyphicon glyphicon-euro"></span>
+                                <g:message code="session.gains"/>
+                            </button>
+                        </g:if>
+                    </sec:ifAllGranted>
 
                 </td>
             </tr>
@@ -131,10 +134,12 @@
                     <td>${player.firstname} ${player.lastname}</td>
                     <td>${player.email}</td>
                     <td class="text-right">
-                        <g:link controller="session" action="removeplayer" class="btn btn-danger btn-xs"
-                                params="[session: sessionInstance.id]" id="${player.id}">
-                            <span class="glyphicon glyphicon-erase"></span>
-                        </g:link>
+                        <sec:ifAllGranted roles="ROLE_ADMIN">
+                            <g:link controller="session" action="removeplayer" class="btn btn-danger btn-xs"
+                                    params="[session: sessionInstance.id]" id="${player.id}">
+                                <span class="glyphicon glyphicon-erase"></span>
+                            </g:link>
+                        </sec:ifAllGranted>
                     </td>
                 </tr>
             </g:each>
@@ -148,10 +153,12 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <g:link class="btn btn-success pull-right" action="create" controller="player"
-                    params="[session: sessionInstance.id]"><span
-                    class="glyphicon glyphicon-user"></span>
-                <g:message code="player.add"/></g:link>
+            <sec:ifAllGranted roles="ROLE_ADMIN">
+                <g:link class="btn btn-success pull-right" action="create" controller="player"
+                        params="[session: sessionInstance.id]"><span
+                        class="glyphicon glyphicon-user"></span>
+                    <g:message code="player.add"/></g:link>
+            </sec:ifAllGranted>
             <h5><g:message code="session.potentials.players"/></h5>
 
         </div>
@@ -170,34 +177,45 @@
                              width="100px"/>
 
                         <div class="caption text-center">
-                            <g:if test="${sessionInstance.open}">
+                            <sec:ifAllGranted roles="ROLE_ADMIN">
+                                <g:if test="${sessionInstance.open}">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+
+                                            <g:link controller="session" action="addplayer" class="btn btn-primary"
+                                                    params="[session: sessionInstance.id]" id="${player.id}">
+                                                <<< <strong>${player.firstname} ${player.lastname}</strong>
+                                            </g:link>
+                                        </li>
+                                        <li class="list-group-item">
+
+                                            <g:if test="${player.current < 2}">
+                                                Somme dû : <g:formatNumber number="${2 - player.current}"/> €
+                                            </g:if>
+                                            <g:else>
+                                                En-cours suffisant
+                                            </g:else>
+                                        </li>
+                                    </ul>
+
+                                </g:if>
+                                <g:else>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <strong>${player.firstname} ${player.lastname}</strong>
+                                        </li>
+                                    </ul>
+                                </g:else>
+                            </sec:ifAllGranted>
+
+                            <sec:ifNotGranted roles="ROLE_ADMIN">
                                 <ul class="list-group">
                                     <li class="list-group-item">
-
-                                        <g:link controller="session" action="addplayer" class="btn btn-primary"
-                                                params="[session: sessionInstance.id]" id="${player.id}">
-                                            <<< <strong>${player.firstname} ${player.lastname}</strong>
-                                        </g:link>
-                                    </li>
-                                    <li class="list-group-item">
-
-                                        <g:if test="${player.current < 2}">
-                                            Somme dû : <g:formatNumber number="${2 - player.current}"/> €
-                                        </g:if>
-                                        <g:else>
-                                            En-cours suffisant
-                                        </g:else>
+                                        <strong>${player.firstname} ${player.lastname}</strong>
                                     </li>
                                 </ul>
+                            </sec:ifNotGranted>
 
-                            </g:if><g:else>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <strong>${player.firstname} ${player.lastname}</strong>
-                                </li>
-                            </ul>
-                        </g:else>
-                        %{--<div class="clearfix">&nbsp;</div>--}%
                         </div>
                     </div>
                 </div>

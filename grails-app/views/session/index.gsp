@@ -27,10 +27,13 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <g:link controller="session" action="create" class="btn btn-success pull-right"><span
-                    class="glyphicon glyphicon-plus"></span> <g:message
-                    code="session.create"/></g:link>
-        <h5>&nbsp;</h5>
+            <sec:ifAllGranted roles="ROLE_ADMIN">
+                <g:link controller="session" action="create" class="btn btn-success pull-right"><span
+                        class="glyphicon glyphicon-plus"></span> <g:message
+                        code="session.create"/></g:link>
+
+            <h5>&nbsp;</h5>
+            </sec:ifAllGranted>
         </div>
 
 

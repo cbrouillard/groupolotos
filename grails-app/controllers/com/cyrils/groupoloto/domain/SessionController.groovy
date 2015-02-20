@@ -4,6 +4,8 @@ package com.cyrils.groupoloto.domain
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
+import grails.plugin.springsecurity.annotation.Secured
+
 @Transactional(readOnly = true)
 class SessionController {
 
@@ -22,10 +24,12 @@ class SessionController {
         [sessionInstance: sessionInstance, allPlayers: allPlayers]
     }
 
+    @Secured(['ROLE_ADMIN'])
     def create() {
         respond new Session(params)
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def addplayer() {
 
@@ -43,6 +47,7 @@ class SessionController {
         return
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def removeplayer() {
 
@@ -59,6 +64,7 @@ class SessionController {
         return
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def close() {
         Session session = Session.findById(params.id)
@@ -73,6 +79,7 @@ class SessionController {
         return
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def open() {
         Session session = Session.findById(params.id)
@@ -87,6 +94,7 @@ class SessionController {
         return
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def win(){
         Session session = Session.findById(params.sessionId)
@@ -115,6 +123,7 @@ class SessionController {
         return
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def save(Session sessionInstance) {
         if (sessionInstance == null) {
@@ -138,33 +147,7 @@ class SessionController {
         }
     }
 
-    def edit(Session sessionInstance) {
-        respond sessionInstance
-    }
-
-    @Transactional
-    def update(Session sessionInstance) {
-        if (sessionInstance == null) {
-            notFound()
-            return
-        }
-
-        if (sessionInstance.hasErrors()) {
-            respond sessionInstance.errors, view: 'edit'
-            return
-        }
-
-        sessionInstance.save flush: true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Session.label', default: 'Session'), sessionInstance.id])
-                redirect sessionInstance
-            }
-            '*' { respond sessionInstance, [status: OK] }
-        }
-    }
-
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def delete(Session sessionInstance) {
 

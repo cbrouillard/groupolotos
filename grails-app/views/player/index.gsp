@@ -28,10 +28,12 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <g:link action="create" class="btn btn-success pull-right"><span
-                    class="glyphicon glyphicon-user"></span> <g:message
-                    code="player.create"/></g:link>
-            <h5>&nbsp;</h5>
+            <sec:ifAllGranted roles="ROLE_ADMIN">
+                <g:link action="create" class="btn btn-success pull-right"><span
+                        class="glyphicon glyphicon-user"></span> <g:message
+                        code="player.create"/></g:link>
+                <h5>&nbsp;</h5>
+            </sec:ifAllGranted>
         </div>
 
         <div class="panel-body">
@@ -52,14 +54,16 @@
                                 <li class="list-group-item">${player.email}</li>
                                 <li class="list-group-item">En-cours : <g:formatNumber
                                         number="${player.current}"/> €</li>
-                                <li class="list-group-item">
-                                    <g:link class="btn btn-danger" action="givemoney" controller="player"
-                                            id="${player.id}">
-                                        <span class="glyphicon glyphicon-euro"></span> <g:message
-                                            code="player.give.money"/>
-                                    </g:link>
+                                <sec:ifAllGranted roles="ROLE_ADMIN">
+                                    <li class="list-group-item">
+                                        <g:link class="btn btn-danger" action="givemoney" controller="player"
+                                                id="${player.id}">
+                                            <span class="glyphicon glyphicon-euro"></span> <g:message
+                                                code="player.give.money"/>
+                                        </g:link>
 
-                                </li>
+                                    </li>
+                                </sec:ifAllGranted>
                             </ul>
 
                         </div>

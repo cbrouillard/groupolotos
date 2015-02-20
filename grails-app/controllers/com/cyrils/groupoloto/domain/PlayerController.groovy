@@ -3,6 +3,7 @@ package com.cyrils.groupoloto.domain
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 
 @Transactional(readOnly = true)
 class PlayerController {
@@ -18,10 +19,12 @@ class PlayerController {
         respond playerInstance
     }
 
+    @Secured(['ROLE_ADMIN'])
     def create() {
         [playerInstance: new Player(params), sessionId: params.session]
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def givemoney() {
         Player player = Player.get(params.id)
@@ -39,6 +42,7 @@ class PlayerController {
         return
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def save(Player playerInstance) {
         if (playerInstance == null) {
@@ -60,10 +64,12 @@ class PlayerController {
         }
     }
 
+    @Secured(['ROLE_ADMIN'])
     def edit(Player playerInstance) {
         respond playerInstance
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def update(Player playerInstance) {
         if (playerInstance == null) {
@@ -87,6 +93,7 @@ class PlayerController {
         }
     }
 
+    @Secured(['ROLE_ADMIN'])
     @Transactional
     def delete(Player playerInstance) {
 

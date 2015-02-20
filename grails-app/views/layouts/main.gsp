@@ -52,11 +52,13 @@
                             <g:link controller="session" action="index">
                                 <span class="glyphicon glyphicon-euro"></span> <g:message code="session.list"/></g:link>
                         </li>
-                        <li>
-                            <g:link controller="session" action="create">
-                                <span class="glyphicon glyphicon-plus"></span> <g:message
-                                    code="session.create"/></g:link>
-                        </li>
+                        <sec:ifAllGranted roles="ROLE_ADMIN">
+                            <li>
+                                <g:link controller="session" action="create">
+                                    <span class="glyphicon glyphicon-plus"></span> <g:message
+                                        code="session.create"/></g:link>
+                            </li>
+                        </sec:ifAllGranted>
 
                         <li class="divider"></li>
 
@@ -65,11 +67,19 @@
                                 <span class="glyphicon glyphicon-user"></span> <g:message code="player.list"/></g:link>
                         </li>
 
-                        %{-- <li class="divider"></li>
 
-                         <li><g:link controller="logout" class="logout"><span
-                                 class="glyphicon glyphicon-log-out"></span> <g:message code="logout"/></g:link>
-                         </li>--}%
+                        <li class="divider"></li>
+                        <sec:ifLoggedIn>
+
+                            <li><g:link controller="logout" class="logout"><span
+                                    class="glyphicon glyphicon-log-out"></span> <g:message code="logout"/></g:link>
+                            </li>
+                        </sec:ifLoggedIn>
+                        <sec:ifNotLoggedIn>
+                            <li><g:link controller="login" class="login"><span
+                                    class="glyphicon glyphicon-log-in"></span> <g:message code="login"/></g:link>
+                            </li>
+                        </sec:ifNotLoggedIn>
                     </ul>
                 </li>
 
