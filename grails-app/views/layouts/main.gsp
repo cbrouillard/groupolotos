@@ -54,7 +54,7 @@
                         </li>
                         <li>
                             <g:link controller="session" action="create">
-                                <span class="glyphicon glyphicon-euro"></span> <g:message
+                                <span class="glyphicon glyphicon-plus"></span> <g:message
                                     code="session.create"/></g:link>
                         </li>
 
@@ -65,11 +65,11 @@
                                 <span class="glyphicon glyphicon-user"></span> <g:message code="player.list"/></g:link>
                         </li>
 
-                        <li class="divider"></li>
+                        %{-- <li class="divider"></li>
 
-                        <li><g:link controller="logout" class="logout"><span
-                                class="glyphicon glyphicon-log-out"></span> <g:message code="logout"/></g:link>
-                        </li>
+                         <li><g:link controller="logout" class="logout"><span
+                                 class="glyphicon glyphicon-log-out"></span> <g:message code="logout"/></g:link>
+                         </li>--}%
                     </ul>
                 </li>
 

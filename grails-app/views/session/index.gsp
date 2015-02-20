@@ -27,53 +27,55 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <g:link controller="session" action="create" class="btn btn-success btn-xs pull-right"><span
-                    class="glyphicon glyphicon-euro"></span> <g:message
+            <g:link controller="session" action="create" class="btn btn-success pull-right"><span
+                    class="glyphicon glyphicon-plus"></span> <g:message
                     code="session.create"/></g:link>
-        &nbsp;
+        <h5>&nbsp;</h5>
         </div>
 
-        <div class="panel-body">
 
-            <table class="table table-striped">
-                <thead>
-                <tr>
+        <table class="table table-striped text-center">
+            <thead>
+            <tr>
 
-                    <g:sortableColumn property="date" title="${message(code: 'session.date.label', default: 'Date')}"/>
+                <g:sortableColumn property="name" title="${message(code: 'session.name.label', default: 'Name')}"
+                                  class="text-center"/>
 
-                    <g:sortableColumn property="open" title="${message(code: 'session.open.label', default: 'Open')}"/>
+                <g:sortableColumn property="date" title="${message(code: 'session.date.label', default: 'Date')}"
+                                  class="text-center"/>
 
-                    <g:sortableColumn property="gains"
-                                      title="${message(code: 'session.gains.label', default: 'Gains')}"/>
+                <g:sortableColumn property="open" title="${message(code: 'session.open.label', default: 'Open')}"
+                                  class="text-center"/>
 
-                    <g:sortableColumn property="dateCreated"
-                                      title="${message(code: 'session.dateCreated.label', default: 'Date Created')}"/>
+                <g:sortableColumn property="gains"
+                                  title="${message(code: 'session.gains.label', default: 'Gains')}"
+                                  class="text-center"/>
 
-                    <g:sortableColumn property="lastUpdated"
-                                      title="${message(code: 'session.lastUpdated.label', default: 'Last Updated')}"/>
+                <g:sortableColumn property="dateCreated"
+                                  title="${message(code: 'session.dateCreated.label', default: 'Date Created')}"
+                                  class="text-center"/>
+
+            </tr>
+            </thead>
+            <tbody>
+            <g:each in="${sessionInstanceList}" status="i" var="sessionInstance">
+                <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+                    <td>${fieldValue(bean: sessionInstance, field: 'name')}</td>
+
+                    <td><g:link action="show"
+                                id="${sessionInstance.id}">${fieldValue(bean: sessionInstance, field: "date")}</g:link></td>
+
+                    <td class="text-center"><g:formatBoolean boolean="${sessionInstance.open}"/></td>
+
+                    <td>${fieldValue(bean: sessionInstance, field: "gains")}</td>
+
+                    <td><g:formatDate date="${sessionInstance.dateCreated}"/></td>
 
                 </tr>
-                </thead>
-                <tbody>
-                <g:each in="${sessionInstanceList}" status="i" var="sessionInstance">
-                    <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-
-                        <td><g:link action="show"
-                                    id="${sessionInstance.id}">${fieldValue(bean: sessionInstance, field: "date")}</g:link></td>
-
-                        <td><g:formatBoolean boolean="${sessionInstance.open}"/></td>
-
-                        <td>${fieldValue(bean: sessionInstance, field: "gains")}</td>
-
-                        <td><g:formatDate date="${sessionInstance.dateCreated}"/></td>
-
-                        <td><g:formatDate date="${sessionInstance.lastUpdated}"/></td>
-
-                    </tr>
-                </g:each>
-                </tbody>
-            </table>
-        </div>
+            </g:each>
+            </tbody>
+        </table>
 
         <div class="panel-footer">
             <g:paginate total="${sessionInstanceCount ?: 0}"/>

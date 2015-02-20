@@ -1,7 +1,6 @@
 package com.cyrils.groupoloto.domain
 
 
-
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -11,8 +10,8 @@ class PlayerController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Player.list(params), model:[playerInstanceCount: Player.count()]
+        params.max = Math.min(max ?: 24, 100)
+        respond Player.list(params), model: [playerInstanceCount: Player.count()]
     }
 
     def show(Player playerInstance) {
@@ -20,7 +19,7 @@ class PlayerController {
     }
 
     def create() {
-        respond new Player(params)
+        [playerInstance: new Player(params), sessionId: params.session]
     }
 
     @Transactional
@@ -31,18 +30,16 @@ class PlayerController {
         }
 
         if (playerInstance.hasErrors()) {
-            respond playerInstance.errors, view:'create'
+            respond playerInstance.errors, view: 'create'
             return
         }
 
-        playerInstance.save flush:true
+        playerInstance.save flush: true
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'player.label', default: 'Player'), playerInstance.id])
-                redirect playerInstance
-            }
-            '*' { respond playerInstance, [status: CREATED] }
+        if (params.sessionId) {
+            redirect controller: 'session', action: "show", id: params.sessionId
+        } else {
+            redirect(action: 'index')
         }
     }
 
@@ -58,18 +55,18 @@ class PlayerController {
         }
 
         if (playerInstance.hasErrors()) {
-            respond playerInstance.errors, view:'edit'
+            respond playerInstance.errors, view: 'edit'
             return
         }
 
-        playerInstance.save flush:true
+        playerInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Player.label', default: 'Player'), playerInstance.id])
                 redirect playerInstance
             }
-            '*'{ respond playerInstance, [status: OK] }
+            '*' { respond playerInstance, [status: OK] }
         }
     }
 
@@ -81,14 +78,14 @@ class PlayerController {
             return
         }
 
-        playerInstance.delete flush:true
+        playerInstance.delete flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'Player.label', default: 'Player'), playerInstance.id])
-                redirect action:"index", method:"GET"
+                redirect action: "index", method: "GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*' { render status: NO_CONTENT }
         }
     }
 
@@ -98,7 +95,7 @@ class PlayerController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'player.label', default: 'Player'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*' { render status: NOT_FOUND }
         }
     }
 }

@@ -1,22 +1,26 @@
 <%@ page import="com.cyrils.groupoloto.domain.Session" %>
 
-<div class="fieldcontain ${hasErrors(bean: sessionInstance, field: 'date', 'error')} required">
-	<label for="date">
-		<g:message code="session.date.label" default="Date" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:datePicker name="date" precision="day"  value="${sessionInstance?.date}"  />
+<div class="form-group ${hasErrors(bean: sessionInstance, field: 'name', 'has-error')}">
 
+    <label for="name" class="col-sm-2 control-label"><g:message code="session.name.label"
+                                                                default="Name"/> *</label>
+
+    <div class="col-sm-10">
+        <div class="input-group">
+            <span class="input-group-addon"><span
+                    class="glyphicon glyphicon-font"></span></span>
+            <g:textField name="name" required="" value="${sessionInstance?.name}" class="form-control"/>
+        </div>
+    </div>
 </div>
 
+<div class="form-group ${hasErrors(bean: sessionInstance, field: 'date', 'has-error')}">
 
-<div class="fieldcontain ${hasErrors(bean: sessionInstance, field: 'players', 'error')} ">
-    <label for="players">
-        <g:message code="session.players.label" default="Players" />
+    <label for="date" class="col-sm-2 control-label"><g:message code="session.date.label"
+                                                                default="date"/> *</label>
 
-    </label>
-    <g:select name="players" from="${com.cyrils.groupoloto.domain.Player.list()}"
-              multiple="multiple" optionKey="id" size="5" value="${sessionInstance?.players*.id}" class="many-to-many"/>
-
+    <div class="col-sm-10">
+        <g:datePicker name="date" precision="day" value="${sessionInstance?.date}"/>
+    </div>
 </div>
 
