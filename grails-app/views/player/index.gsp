@@ -27,12 +27,20 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <sec:ifAllGranted roles="ROLE_ADMIN">
-                <g:link action="create" class="btn btn-success pull-right"><span
-                        class="glyphicon glyphicon-user"></span> <g:message
-                        code="player.create"/></g:link>
-            </sec:ifAllGranted>
-            <h5>Nombre de joueurs total : ${com.cyrils.groupoloto.domain.Player.count()}</h5>
+
+            <div class="btn-group pull-right" role="group">
+                <g:link class="btn btn-default" controller="player" action="index"
+                        params="[order: params.order == 'asc' ? 'desc' : 'asc', sort: 'firstname']">
+                    <span
+                            class="glyphicon glyphicon-sort-by-alphabet"></span> Tri
+                </g:link>
+                <sec:ifAllGranted roles="ROLE_ADMIN">
+                    <g:link action="create" class="btn btn-success "><span
+                            class="glyphicon glyphicon-user"></span> <g:message
+                            code="player.create"/></g:link>
+                </sec:ifAllGranted>
+            </div>
+            <h5>Total : ${com.cyrils.groupoloto.domain.Player.count()}</h5>
         </div>
 
         <div class="panel-body">
@@ -51,9 +59,11 @@
                             <ul class="list-group">
                                 <li class="list-group-item list-group-item-info"><strong>${player.firstname} ${player.lastname}</strong>
                                 </li>
-                                <li class="list-group-item">${player.email}</li>
+                                <sec:ifAllGranted roles="ROLE_ADMIN">
+                                    <li class="list-group-item">${player.email}</li>
+                                </sec:ifAllGranted>
                                 <li class="list-group-item">En-cours : <g:formatNumber
-                                        number="${player.current}"/> €</li>
+                                        number="${player.current}" type="currency" currencyCode="EUR"/></li>
                                 <sec:ifAllGranted roles="ROLE_ADMIN">
                                     <li class="list-group-item">
                                         <g:link class="btn btn-danger" action="givemoney" controller="player"

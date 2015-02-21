@@ -13,8 +13,8 @@ class SessionController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        params.sort = "date"
-        params.order = "desc"
+        params.sort = params.sort ?:"dateCreated"
+        params.order = params.order?:"desc"
 
         def c = Session.createCriteria()
         def gainsSum = c.get {
@@ -30,18 +30,27 @@ class SessionController {
             }
         }
 
+        def c3 = Player.createCriteria()
+        def bank = c3.get {
+            projections {
+                sum "current"
+            }
+        }
+
         def playersCount = Session.executeQuery(
                 'select count(p.id) from Session s join s.players p')[0]
 
         def graphResult = Session.executeQuery(
-                'select s.name, count(p) * 2, s.gains from Session s join s.players p group by s.name, s.gains'
+                'select s.name, count(p) * 2, s.gains from Session s join s.players p group by s.name, s.gains, s.date order by s.date asc',
+                [max: 10, offset: 0]
         )
 
         respond Session.list(params), model: [sessionInstanceCount: Session.count(),
                                               totalGains          : gainsSum,
                                               totalSum            : playersCount * 2,
                                               avgGains            : gainsAvg,
-                                              graphData           : graphResult]
+                                              graphData           : graphResult,
+                                              bank                : bank]
     }
 
     def show(Session sessionInstance) {
@@ -72,6 +81,7 @@ class SessionController {
                 player.current = 0
             }
             session.save flush: true
+            player.save flush: true
             redirect action: 'show', id: session.id
         }
 
@@ -88,7 +98,11 @@ class SessionController {
             redirect controller: 'session'
         } else {
             session.players.remove(player)
-            // todo remettre l'en-cours à niveau de la participation
+
+            if (!(player.getCurrent() <= 0D)) {
+                player.current += 2
+            }
+
             session.save flush: true
             redirect action: 'show', id: session.id
         }

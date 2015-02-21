@@ -24,7 +24,7 @@
     </div>
 </div>
 
-<div class="col-sm-4">
+<div class="col-sm-4 col-xs-12">
 
     <div class="panel panel-info">
         <div class="panel-heading">
@@ -36,17 +36,21 @@
                 <td><strong>Nombre total de sessions</strong></td>
                 <td>${com.cyrils.groupoloto.domain.Session.count()}</td>
             </tr>
+            <tr class="warning">
+                <td><strong>Banque, somme des en-cours</strong></td>
+                <td><g:formatNumber number="${bank}" type="currency" currencyCode="EUR"/></td>
+            </tr>
             <tr>
                 <td><strong>Somme totale engagée</strong></td>
-                <td>${totalSum} €</td>
+                <td><g:formatNumber number="${totalSum}" type="currency" currencyCode="EUR"/></td>
             </tr>
             <tr>
                 <td><strong>Gains totaux engrangés</strong></td>
-                <td>${totalGains} €</td>
+                <td><g:formatNumber number="${totalGains}" type="currency" currencyCode="EUR"/></td>
             </tr>
             <tr>
                 <td><strong>Gains moyens par session</strong></td>
-                <td>${avgGains} €</td>
+                <td><g:formatNumber number="${avgGains}" type="currency" currencyCode="EUR"/></td>
             </tr>
         </table>
 
@@ -66,7 +70,8 @@
 
                 <gvisualization:areaCoreChart elementId="lineChart"
                                               columns="${myDailyActivitiesColumns}" data="${graphData}"
-                                              legend="[position: 'bottom']"/>
+                                              legend="[position: 'bottom']"
+                                              width="100%"/>
                 <div id="lineChart"></div>
 
             </div>
@@ -77,7 +82,7 @@
 </div>
 
 
-<div class="col-sm-8">
+<div class="col-sm-8 col-xs-12">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -121,11 +126,13 @@
                         <td><g:link action="show"
                                     id="${sessionInstance.id}">${fieldValue(bean: sessionInstance, field: 'name')}</g:link></td>
 
-                        <td>${fieldValue(bean: sessionInstance, field: "date")}</td>
+                        <td><g:formatDate date="${sessionInstance.date}" formatName="date.format.short"/></td>
 
-                        <td class="text-center"><g:formatBoolean boolean="${sessionInstance.open}"/></td>
+                        <td class="text-center"><span
+                                class="label label-${sessionInstance.open ? 'success' : 'danger'}"><g:formatBoolean
+                                    boolean="${sessionInstance.open}"/></span></td>
 
-                        <td>${fieldValue(bean: sessionInstance, field: "gains")}</td>
+                        <td><g:formatNumber number="${sessionInstance.gains}" type="currency" currencyCode="EUR"/></td>
 
                         <td><g:formatDate date="${sessionInstance.dateCreated}"/></td>
 

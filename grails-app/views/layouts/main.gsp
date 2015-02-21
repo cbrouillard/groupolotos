@@ -27,14 +27,14 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
                     data-target="#navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">Toggle</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
 
-            <g:link controller="session" action="index" class="navbar-brand"><g:message
-                    code="app.name"/></g:link>
+            <g:link controller="session" action="index" class="navbar-brand" style="vertical-align:middle;">
+                <g:message code="app.name"/></g:link>
 
         </div>
 
@@ -44,11 +44,9 @@
             <ul class="nav navbar-nav navbar-right">
 
                 <sec:ifAllGranted roles="ROLE_ADMIN">
-                    <li>
-                        <g:link controller="superUser" action="index">
-                            <span class="glyphicon glyphicon-heart"></span>
-                            <g:message code="hello" args="${sec.loggedInUserInfo(field: "username")}"/>
-                        </g:link>
+                    <li class="navbar-text">
+                        <span class="glyphicon glyphicon-heart"></span>
+                        <g:message code="hello" args="${sec.loggedInUserInfo(field: "username")}"/>
                     </li>
                 </sec:ifAllGranted>
 
@@ -111,7 +109,20 @@
 
 <footer>
     <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-        <div class="container">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <g:link controller="session" action="index" class="navbar-brand" style="vertical-align:middle;">
+                    <asset:image src="rastapopoulos.jpg" width="24px" style="float: left;"/>
+                </g:link>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="navbar-text"><g:message code="app.name"/> - Application de gestion de loto à plusieurs</li>
+                <li>
+                    <a href="https://github.com/cbrouillard/groupolotos">https://github.com/cbrouillard/groupolotos</a>
+                </li>
+            </ul>
         </div>
     </nav>
 </footer>

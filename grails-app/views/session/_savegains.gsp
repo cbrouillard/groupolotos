@@ -20,7 +20,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon">€</span>
                                 <g:textField name="gains" required="" value="${sessionInstance.gains}"
-                                             class="form-control" pattern="^([0-9])*"/>
+                                             class="form-control" pattern="^([0-9.,])*"/>
                             </div>
                             <div class="help-block with-errors"></div>
                         </div>
