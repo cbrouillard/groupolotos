@@ -1,5 +1,6 @@
 package com.cyrils.groupoloto.domain
 
+import java.text.SimpleDateFormat
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -13,8 +14,8 @@ class SessionController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        params.sort = params.sort ?:"dateCreated"
-        params.order = params.order?:"desc"
+        params.sort = params.sort ?: "dateCreated"
+        params.order = params.order ?: "desc"
 
         def c = Session.createCriteria()
         def gainsSum = c.get {
@@ -174,6 +175,9 @@ class SessionController {
             return
         }
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy")
+        sessionInstance.date = sdf.parse(params.dateToParse)
+
         if (sessionInstance.hasErrors()) {
             respond sessionInstance.errors, view: 'create'
             return
@@ -208,6 +212,31 @@ class SessionController {
             }
             '*' { render status: NO_CONTENT }
         }
+    }
+
+    @Secured(['ROLE_ADMIN'])
+    def mailwarneveryone() {
+        Session session = Session.get(params.id)
+        def emails = Player.executeQuery("select p.email from Player p")
+
+        if (!session || !emails) {
+            redirect(action: 'index')
+            return
+        }
+
+        render view: '/mail/mail', model: [template: 'everyone', emails: emails, sessionInstance: session]
+    }
+
+    def mailforgains (){
+        Session session = Session.get(params.id)
+        def emails = session.players*.email
+
+        if (!session || !emails) {
+            redirect(action: 'index')
+            return
+        }
+
+        render view: '/mail/mail', model: [template: 'gains', emails: emails, sessionInstance: session]
     }
 
     protected void notFound() {

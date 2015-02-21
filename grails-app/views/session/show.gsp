@@ -111,7 +111,7 @@
                                     <g:message code="session.gains"/>
                                 </button>
 
-                                <g:link class="btn btn-success btn-xs" controller="session" action="mailforgains">
+                                <g:link class="btn btn-success btn-xs" controller="session" action="mailforgains" id="${sessionInstance.id}">
                                     <span class="glyphicon glyphicon-phone-alt"></span> <g:message code="warn.gains"/>
                                 </g:link>
 

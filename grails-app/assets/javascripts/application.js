@@ -6,17 +6,23 @@
 // to create separate JavaScript files as needed.
 //
 //= require jquery
-//= require_tree .
-//= require_self
 //= require bootstrap
 //= require validator
+//= require moment-with-locales.min
+//= require bootstrap-datetimepicker.min
+//= require_tree .
+//= require_self
 
 if (typeof jQuery !== 'undefined') {
-	(function($) {
-		$('#spinner').ajaxStart(function() {
-			$(this).fadeIn();
-		}).ajaxStop(function() {
-			$(this).fadeOut();
-		});
-	})(jQuery);
+    (function ($) {
+        $('#spinner').ajaxStart(function () {
+            $(this).fadeIn();
+        }).ajaxStop(function () {
+            $(this).fadeOut();
+        });
+    })(jQuery);
 }
+
+$(document).ready(function () {
+    $(".datepicker").datetimepicker({locale: 'fr', format:"DD/MM/YYYY"});
+})
