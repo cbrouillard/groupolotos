@@ -9,7 +9,7 @@
 <body>
 
 <div class="row-fluid">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
         <div>
             <h1><g:message
                     code="admin.list"/> <small>22 v'la les admins !</small>
@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div class="col-xs-12">
+<div class="col-sm-12">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -41,13 +41,14 @@
                 <g:if test="${counter == 0}">
                     <div class="row-fluid">
                 </g:if>
-                <div class="col-xs-2">
+                <div class="col-lg-2 col-md-4 col-sm-5">
                     <div class="thumbnail panel-success">
                         <img src="https://robohash.org/${admin.username}" width="100px"/>
 
                         <div class="caption text-center">
                             <ul class="list-group">
-                                <li class="list-group-item list-group-item-success"><strong>${admin.username}</strong></li>
+                                <li class="list-group-item list-group-item-success"><strong>${admin.username}</strong>
+                                </li>
                                 <li class="list-group-item">${admin.email}</li>
                                 <sec:ifAllGranted roles="ROLE_ADMIN">
                                     <g:if test="${sec.loggedInUserInfo(field: "username") == admin.username}">

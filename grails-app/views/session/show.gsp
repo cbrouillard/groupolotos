@@ -9,7 +9,7 @@
 <body>
 
 <div class="row-fluid">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
         <div>
             <h1><g:message
                     code="session.show"/> <small>${sessionInstance.name}</small>
@@ -24,7 +24,7 @@
 </div>
 
 
-<div class="col-xs-4">
+<div class="col-sm-4 col-xs-12">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -148,7 +148,7 @@
 
 </div>
 
-<div class="col-xs-8">
+<div class="col-sm-8 col-xs-12">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -170,7 +170,7 @@
                 <g:if test="${counter == 0}">
                     <div class="row-fluid">
                 </g:if>
-                <div class="col-xs-3">
+                <div class="col-lg-3 col-md-4 col-sm-5">
                     <div class="thumbnail panel-primary">
                         <img src="https://robohash.org/${player.firstname}${player.lastname.substring(0, 1)}"
                              width="100px"/>
@@ -189,7 +189,8 @@
                                         <li class="list-group-item">
 
                                             <g:if test="${player.current < 2}">
-                                                Somme dûe pour jouer : <g:formatNumber number="${2 - player.current}"/> €
+                                                Somme dûe pour jouer : <g:formatNumber
+                                                    number="${2 - player.current}"/> €
                                             </g:if>
                                             <g:else>
                                                 En-cours suffisant

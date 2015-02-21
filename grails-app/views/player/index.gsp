@@ -9,7 +9,7 @@
 <body>
 
 <div class="row-fluid">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
         <div>
             <h1><g:message
                     code="players.list"/> <small>Voici la liste publique des joueurs enregistrés</small>
@@ -23,7 +23,7 @@
 </div>
 
 
-<div class="col-xs-12">
+<div class="col-sm-12">
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -42,7 +42,7 @@
                 <g:if test="${counter == 0}">
                     <div class="row-fluid">
                 </g:if>
-                <div class="col-xs-2">
+                <div class="col-lg-2 col-md-4 col-sm-5">
                     <div class="thumbnail panel-primary">
                         <img src="https://robohash.org/${player.firstname}${player.lastname.substring(0, 1)}"
                              width="100px"/>
