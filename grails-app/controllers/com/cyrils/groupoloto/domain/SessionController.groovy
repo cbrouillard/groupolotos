@@ -13,6 +13,8 @@ class SessionController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+        params.sort = "date"
+        params.order = "desc"
         respond Session.list(params), model: [sessionInstanceCount: Session.count()]
     }
 
@@ -40,6 +42,9 @@ class SessionController {
         } else {
             session.players.add(player)
             player.current -= 2
+            if (player.current < 0) {
+                player.current = 0
+            }
             session.save flush: true
             redirect action: 'show', id: session.id
         }
@@ -57,6 +62,7 @@ class SessionController {
             redirect controller: 'session'
         } else {
             session.players.remove(player)
+            // todo remettre l'en-cours à niveau de la participation
             session.save flush: true
             redirect action: 'show', id: session.id
         }
@@ -67,26 +73,23 @@ class SessionController {
     @Secured(['ROLE_ADMIN'])
     @Transactional
     def close() {
-        Session session = Session.findById(params.id)
-        if (!session) {
-            redirect controller: 'session'
-        } else {
-            session.open = false
-            session.save flush: true
-            redirect action: 'show', id: session.id
-        }
-
+        openOrClose(params.id, false)
         return
     }
 
     @Secured(['ROLE_ADMIN'])
     @Transactional
     def open() {
-        Session session = Session.findById(params.id)
+        openOrClose(params.id, true)
+        return
+    }
+
+    private void openOrClose (def sessionId, boolean open){
+        Session session = Session.get(sessionId)
         if (!session) {
             redirect controller: 'session'
         } else {
-            session.open = true
+            session.open = open
             session.save flush: true
             redirect action: 'show', id: session.id
         }
@@ -96,18 +99,18 @@ class SessionController {
 
     @Secured(['ROLE_ADMIN'])
     @Transactional
-    def win(){
+    def win() {
         Session session = Session.findById(params.sessionId)
-        if (session){
+        if (session) {
 
-            def previousSavedGains = session.gains
+            def previousSavedGains = new Double(session.gains)
 
-            bindData(session, params, [include:["gains"]])
+            bindData(session, params, [include: ["gains"]])
 
             def players = session.players
-            if (players){
-                def eachPlayersGains = new Double ((session.gains - previousSavedGains) / players.size())
-                players.each {p ->
+            if (players) {
+                def eachPlayersGains = new Double((session.gains - previousSavedGains) / players.size())
+                players.each { p ->
                     p.current += eachPlayersGains
                 }
 
@@ -115,11 +118,11 @@ class SessionController {
             }
 
             session.save(flush: true)
-            redirect action: 'show', id:session.id
+            redirect action: 'show', id: session.id
             return
         }
 
-        redirect action:'index'
+        redirect action: 'index'
         return
     }
 

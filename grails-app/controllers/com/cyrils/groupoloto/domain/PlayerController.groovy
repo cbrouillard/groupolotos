@@ -12,6 +12,8 @@ class PlayerController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 24, 100)
+        params.sort = "firstname"
+        params.order = "asc"
         respond Player.list(params), model: [playerInstanceCount: Player.count()]
     }
 

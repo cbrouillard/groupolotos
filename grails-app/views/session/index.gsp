@@ -4,7 +4,6 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'session.label', default: 'Session')}"/>
-    <title><g:message code="default.list.label" args="[entityName]"/></title>
 </head>
 
 <body>
@@ -64,10 +63,10 @@
             <g:each in="${sessionInstanceList}" status="i" var="sessionInstance">
                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                    <td>${fieldValue(bean: sessionInstance, field: 'name')}</td>
-
                     <td><g:link action="show"
-                                id="${sessionInstance.id}">${fieldValue(bean: sessionInstance, field: "date")}</g:link></td>
+                                id="${sessionInstance.id}">${fieldValue(bean: sessionInstance, field: 'name')}</g:link></td>
+
+                    <td>${fieldValue(bean: sessionInstance, field: "date")}</td>
 
                     <td class="text-center"><g:formatBoolean boolean="${sessionInstance.open}"/></td>
 

@@ -11,6 +11,7 @@
                     class="glyphicon glyphicon-user"></span></span>
             <g:textField name="lastname" required="" value="${playerInstance?.lastname}" class="form-control"/>
         </div>
+        <div class="help-block with-errors"></div>
     </div>
 </div>
 
@@ -26,6 +27,7 @@
 
             <g:textField name="firstname" required="" value="${playerInstance?.firstname}" class="form-control"/>
         </div>
+        <div class="help-block with-errors"></div>
     </div>
 </div>
 
@@ -38,8 +40,9 @@
     <div class="col-sm-10">
         <div class="input-group">
             <span class="input-group-addon">@</span>
-            <g:textField name="email" required="" value="${playerInstance?.email}" class="form-control"/>
+            <g:textField type="email" name="email" required="" value="${playerInstance?.email}" class="form-control"/>
         </div>
+        <div class="help-block with-errors"></div>
     </div>
 </div>
 

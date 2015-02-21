@@ -11,6 +11,7 @@
                     class="glyphicon glyphicon-font"></span></span>
             <g:textField name="name" required="" value="${sessionInstance?.name}" class="form-control"/>
         </div>
+        <div class="help-block with-errors"></div>
     </div>
 </div>
 
@@ -21,6 +22,7 @@
 
     <div class="col-sm-10">
         <g:datePicker name="date" precision="day" value="${sessionInstance?.date}"/>
+        <div class="help-block with-errors"></div>
     </div>
 </div>
 

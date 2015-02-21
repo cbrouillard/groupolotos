@@ -3,7 +3,6 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'player.label', default: 'Player')}"/>
-    <title><g:message code="default.create.label" args="[entityName]"/></title>
 </head>
 
 <body>
@@ -36,7 +35,7 @@
 
 <div class="col-xs-12">
 
-    <g:form url="[resource: playerInstance, action: 'save']" class="form-horizontal">
+    <g:form url="[resource: playerInstance, action: 'save']" class="form-horizontal" data-toggle="validator">
         <div class="panel panel-default">
             <div class="panel-body">
 

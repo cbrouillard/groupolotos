@@ -9,6 +9,7 @@
 //= require_tree .
 //= require_self
 //= require bootstrap
+//= require validator
 
 if (typeof jQuery !== 'undefined') {
 	(function($) {

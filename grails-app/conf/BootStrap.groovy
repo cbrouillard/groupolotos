@@ -22,11 +22,16 @@ class BootStrap {
             admin.save(flush: true)
 
             def roleAdmin = Role.findByAuthority("ROLE_ADMIN")
+            def roleSuperAdmin = Role.findByAuthority("ROLE_SUPERADMIN")
             if (!roleAdmin) {
                 // Should not happen
                 roleAdmin = new Role(authority: "ROLE_ADMIN").save(flush: true)
             }
+            if (!roleSuperAdmin){
+                roleSuperAdmin = new Role(authority: "ROLE_SUPERADMIN").save(flush: true)
+            }
             SuperUserRole.create(admin, roleAdmin, true)
+            SuperUserRole.create(admin, roleSuperAdmin, true)
         }
 
     }

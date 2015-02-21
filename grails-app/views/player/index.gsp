@@ -4,7 +4,6 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'player.label', default: 'Player')}"/>
-    <title><g:message code="default.list.label" args="[entityName]"/></title>
 </head>
 
 <body>
@@ -50,7 +49,8 @@
 
                         <div class="caption text-center">
                             <ul class="list-group">
-                                <li class="list-group-item"><strong>${player.firstname} ${player.lastname}</strong></li>
+                                <li class="list-group-item list-group-item-info"><strong>${player.firstname} ${player.lastname}</strong>
+                                </li>
                                 <li class="list-group-item">${player.email}</li>
                                 <li class="list-group-item">En-cours : <g:formatNumber
                                         number="${player.current}"/> €</li>
@@ -86,5 +86,6 @@
 
     </div>
 </div>
+
 </body>
 </html>

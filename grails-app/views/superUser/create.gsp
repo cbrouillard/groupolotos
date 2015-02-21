@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'session.label', default: 'Session')}"/>
+    <g:set var="entityName" value="${message(code: 'superUser.label', default: 'SuperUser')}"/>
 </head>
 
 <body>
@@ -11,7 +11,7 @@
     <div class="col-xs-12">
         <div>
             <h1><g:message
-                    code="session.create"/> <small><g:message code="session.create.hint"/></small>
+                    code="admin.create"/> <small><g:message code="admin.create.hint"/></small>
             </h1>
             <hr/>
         </div>
@@ -20,10 +20,10 @@
             <div class="alert alert-info" role="status">${flash.message}</div>
         </g:if>
 
-        <g:hasErrors bean="${sessionInstance}">
-            <div class="alert-danger alert">
+        <g:hasErrors bean="${superUserInstance}">
+            <div class="alert alert-danger">
                 <ul class="errors" role="alert">
-                    <g:eachError bean="${sessionInstance}" var="error">
+                    <g:eachError bean="${superUserInstance}" var="error">
                         <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message
                                 error="${error}"/></li>
                     </g:eachError>
@@ -35,7 +35,7 @@
 
 <div class="col-xs-12">
 
-    <g:form url="[resource: sessionInstance, action: 'save']" class="form-horizontal" data-toggle="validator">
+    <g:form url="[resource: superUserInstance, action: 'save']" class="form-horizontal" data-toggle="validator">
         <div class="panel panel-default">
             <div class="panel-body">
 
@@ -62,5 +62,6 @@
     </g:form>
 
 </div>
+
 </body>
 </html>
