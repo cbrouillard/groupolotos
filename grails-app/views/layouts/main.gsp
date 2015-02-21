@@ -41,7 +41,17 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
 
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-right">
+
+                <sec:ifAllGranted roles="ROLE_ADMIN">
+                    <li>
+                        <g:link controller="superUser" action="index">
+                            <span class="glyphicon glyphicon-heart"></span>
+                            <g:message code="hello" args="${sec.loggedInUserInfo(field: "username")}"/>
+                        </g:link>
+                    </li>
+                </sec:ifAllGranted>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                             class="glyphicon glyphicon-cog"></span> <g:message code="action.menu"/> <span

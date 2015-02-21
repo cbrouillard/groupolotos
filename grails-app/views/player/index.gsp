@@ -31,8 +31,8 @@
                 <g:link action="create" class="btn btn-success pull-right"><span
                         class="glyphicon glyphicon-user"></span> <g:message
                         code="player.create"/></g:link>
-                <h5>&nbsp;</h5>
             </sec:ifAllGranted>
+            <h5>Nombre de joueurs total : ${com.cyrils.groupoloto.domain.Player.count()}</h5>
         </div>
 
         <div class="panel-body">

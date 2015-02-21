@@ -26,7 +26,7 @@
 
 <div class="col-sm-4 col-xs-12">
 
-    <div class="panel panel-default">
+    <div class="panel panel-info">
         <div class="panel-heading">
             <sec:ifAllGranted roles="ROLE_ADMIN">
                 <div class="form-inline pull-right">
@@ -120,7 +120,7 @@
         </table>
     </div>
 
-    <div class="panel panel-default">
+    <div class="panel panel-info">
         <div class="panel-heading">
             <g:message code="session.players.label"
                        default="Players"/>
@@ -162,7 +162,7 @@
 
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body" style="background-color: transparent !important;">
 
             <g:set var="size" value="${allPlayers?.size()}"/>
             <g:set var="counter" value="${0}"/>

@@ -4,6 +4,8 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'session.label', default: 'Session')}"/>
+
+    <gvisualization:apiImport/>
 </head>
 
 <body>
@@ -22,7 +24,60 @@
     </div>
 </div>
 
-<div class="col-xs-12">
+<div class="col-sm-4">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h5><g:message code="stats.global"/></h5>
+        </div>
+
+        <table class="table">
+            <tr>
+                <td><strong>Nombre total de sessions</strong></td>
+                <td>${com.cyrils.groupoloto.domain.Session.count()}</td>
+            </tr>
+            <tr>
+                <td><strong>Somme totale engagée</strong></td>
+                <td>${totalSum} €</td>
+            </tr>
+            <tr>
+                <td><strong>Gains totaux engrangés</strong></td>
+                <td>${totalGains} €</td>
+            </tr>
+            <tr>
+                <td><strong>Gains moyens par session</strong></td>
+                <td>${avgGains} €</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <g:if test="${graphData}">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h5><g:message code="stats.graph"/></h5>
+            </div>
+
+            <div class="panel-body">
+
+                <%
+                    def myDailyActivitiesColumns = [['string', 'Session'], ['number', message(code: 'fees')], ['number', message(code: 'gains')]]
+                %>
+
+                <gvisualization:areaCoreChart elementId="lineChart"
+                                              columns="${myDailyActivitiesColumns}" data="${graphData}"
+                                              legend="[position: 'bottom']"/>
+                <div id="lineChart"></div>
+
+            </div>
+
+        </div>
+    </g:if>
+
+</div>
+
+
+<div class="col-sm-8">
 
     <div class="panel panel-default">
         <div class="panel-heading">

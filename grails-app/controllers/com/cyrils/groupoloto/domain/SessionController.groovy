@@ -15,7 +15,33 @@ class SessionController {
         params.max = Math.min(max ?: 10, 100)
         params.sort = "date"
         params.order = "desc"
-        respond Session.list(params), model: [sessionInstanceCount: Session.count()]
+
+        def c = Session.createCriteria()
+        def gainsSum = c.get {
+            projections {
+                sum "gains"
+            }
+        }
+
+        def c2 = Session.createCriteria()
+        def gainsAvg = c2.get {
+            projections {
+                avg "gains"
+            }
+        }
+
+        def playersCount = Session.executeQuery(
+                'select count(p.id) from Session s join s.players p')[0]
+
+        def graphResult = Session.executeQuery(
+                'select s.name, count(p) * 2, s.gains from Session s join s.players p group by s.name, s.gains'
+        )
+
+        respond Session.list(params), model: [sessionInstanceCount: Session.count(),
+                                              totalGains          : gainsSum,
+                                              totalSum            : playersCount * 2,
+                                              avgGains            : gainsAvg,
+                                              graphData           : graphResult]
     }
 
     def show(Session sessionInstance) {
@@ -84,7 +110,7 @@ class SessionController {
         return
     }
 
-    private void openOrClose (def sessionId, boolean open){
+    private void openOrClose(def sessionId, boolean open) {
         Session session = Session.get(sessionId)
         if (!session) {
             redirect controller: 'session'
