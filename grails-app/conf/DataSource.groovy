@@ -33,7 +33,13 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "update"
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
+            driverClassName = "org.postgresql.Driver"
+            username = "cyrils"
+            password = "lesbogossesdu75"
+            url = "jdbc:postgresql://127.0.0.1:5432/groupoloto"
+
+            /*dbCreate = "update"
             url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
             properties {
                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
@@ -54,7 +60,7 @@ environments {
                testOnReturn = false
                jdbcInterceptors = "ConnectionState"
                defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
-            }
+            }*/
         }
     }
 }

@@ -111,17 +111,8 @@
     <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
         <div class="container-fluid">
 
-            <div class="navbar-header">
-                <g:link controller="session" action="index" class="navbar-brand" style="vertical-align:middle;">
-                    <asset:image src="rastapopoulos.jpg" width="24px" style="float: left;"/>
-                </g:link>
-            </div>
-
             <ul class="nav navbar-nav navbar-right">
                 <li class="navbar-text"><g:message code="app.name"/> - Application de gestion de loto à plusieurs</li>
-                <li>
-                    <a href="https://github.com/cbrouillard/groupolotos">https://github.com/cbrouillard/groupolotos</a>
-                </li>
             </ul>
         </div>
     </nav>

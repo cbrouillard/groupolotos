@@ -19,7 +19,7 @@ html {
 body {
     min-height: 100%;
     background: #fff url(../images/rasta.gif) no-repeat right 0 bottom -340px;
-    padding-bottom: 50px;
+    padding-bottom: 70px;
 }
 
 @media screen and (max-width: 480px) {
