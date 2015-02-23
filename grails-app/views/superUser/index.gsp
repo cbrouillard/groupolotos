@@ -60,15 +60,26 @@
                                                     <span class="glyphicon glyphicon-star"></span>
                                                     Pass
                                                 </button>
+
                                             </div>
                                         </li>
                                     </g:if>
                                     <g:else>
-                                        <li class="list-group-item">
-                                            <button type="button" class="btn btn-success disabled">
-                                                <span class="glyphicon glyphicon-star"></span>Pass
-                                            </button>
-                                        </li>
+                                        <g:form url="[resource: admin, action: 'delete']" method="DELETE">
+                                            <li class="list-group-item">
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-success disabled">
+                                                        <span class="glyphicon glyphicon-star"></span> Pass
+                                                    </button>
+                                                    <sec:ifAllGranted roles="ROLE_SUPERADMIN">
+                                                        <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </sec:ifAllGranted>
+                                                </div>
+                                            </li>
+                                        </g:form>
                                     </g:else>
 
                                 </sec:ifAllGranted>

@@ -30,6 +30,24 @@
     </div>
 </div>
 
+<div class="form-group">
+
+    <label for="password" class="col-sm-2 control-label"><g:message
+            code="admin.password.confirm.label"
+            default="password"/> *</label>
+
+    <div class="col-sm-10">
+        <div class="input-group">
+            <span class="input-group-addon"><span
+                    class="glyphicon glyphicon-star"></span></span>
+            <g:passwordField name="passwordCheck" required="" class="form-control"
+                             data-match-error="${message(code:'pass.notmatch')}" data-match="#password"/>
+        </div>
+
+        <div class="help-block with-errors"></div>
+    </div>
+</div>
+
 <div class="form-group ${hasErrors(bean: superUserInstance, field: 'email', 'has-error')}">
 
     <label for="email" class="col-sm-2 control-label"><g:message code="admin.email.label"

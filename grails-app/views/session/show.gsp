@@ -111,7 +111,8 @@
                                     <g:message code="session.gains"/>
                                 </button>
 
-                                <g:link class="btn btn-success btn-xs" controller="session" action="mailforgains" id="${sessionInstance.id}">
+                                <g:link class="btn btn-success btn-xs" controller="session" action="mailforgains"
+                                        id="${sessionInstance.id}">
                                     <span class="glyphicon glyphicon-phone-alt"></span> <g:message code="warn.gains"/>
                                 </g:link>
 
@@ -231,7 +232,17 @@
                             <sec:ifNotGranted roles="ROLE_ADMIN">
                                 <ul class="list-group">
                                     <li class="list-group-item list-group-item-info">
-                                        <strong>${player.firstname} ${player.lastname}</strong>
+                                        <strong>${player.firstname} ${player.lastname.substring(0, 1)}.</strong>
+                                    </li>
+                                    <li class="list-group-item">
+
+                                        <g:if test="${player.current < 2}">
+                                            Pour jouer : <g:formatNumber
+                                                number="${2 - player.current}" type="currency" currencyCode="EUR"/>
+                                        </g:if>
+                                        <g:else>
+                                            En-cours suffisant
+                                        </g:else>
                                     </li>
                                 </ul>
                             </sec:ifNotGranted>

@@ -21,6 +21,7 @@ class SuperUserController {
         respond SuperUser.list(params), model:[superUserInstanceCount: SuperUser.count()]
     }
 
+    @Secured(['ROLE_SUPERADMIN'])
     def create() {
         respond new SuperUser(params)
     }
@@ -44,6 +45,7 @@ class SuperUserController {
         return
     }
 
+    @Secured(['ROLE_SUPERADMIN'])
     @Transactional
     def save(SuperUser superUserInstance) {
         if (superUserInstance == null) {
@@ -53,6 +55,14 @@ class SuperUserController {
 
         if (superUserInstance.hasErrors()) {
             respond superUserInstance.errors, view:'create'
+            return
+        }
+
+        def pass = params.password
+        def confirmation = params.passwordCheck
+        if (pass != confirmation){
+            // should not happen
+            redirect action:'index'
             return
         }
 
@@ -74,6 +84,7 @@ class SuperUserController {
         }
     }
 
+    @Secured(['ROLE_SUPERADMIN'])
     @Transactional
     def delete(SuperUser superUserInstance) {
 
@@ -82,6 +93,7 @@ class SuperUserController {
             return
         }
 
+        SuperUserRole.removeAll(superUserInstance, true)
         superUserInstance.delete flush:true
 
         request.withFormat {

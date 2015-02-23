@@ -11,7 +11,7 @@ class PlayerController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 6, 100)
+        params.max = Math.min(max ?: 24, 100)
         params.sort = params.sort?:"firstname"
         params.order = params.order?:"asc"
         respond Player.list(params), model: [playerInstanceCount: Player.count()]
