@@ -72,7 +72,6 @@ class SessionController {
         return
     }
 
-    @Secured(['ROLE_ADMIN'])
     def downloadticket() {
         def session = Session.get(params.id)
         if (session) {
