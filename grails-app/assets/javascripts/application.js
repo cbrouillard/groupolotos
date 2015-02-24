@@ -10,6 +10,7 @@
 //= require validator
 //= require moment-with-locales.min
 //= require bootstrap-datetimepicker.min
+//= require fileinput
 //= require_tree .
 //= require_self
 

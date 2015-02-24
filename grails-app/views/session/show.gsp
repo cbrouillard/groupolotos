@@ -89,6 +89,30 @@
                 </td>
             </tr>
             <tr>
+                <td><strong><g:message code="session.ticket.label"
+                                       default="Ticket"/></strong></td>
+                <td><g:if test="${sessionInstance.proofTicket}">
+                    <g:link controller="session" action="downloadticket" id="${sessionInstance.id}">
+                        <span class="glyphicon glyphicon-download"></span>
+                        <g:message code="session.download.label"/>
+                    </g:link>
+                </g:if>
+                    <g:else>
+                        <i><g:message code="session.noticket.todownload"/></i>
+                    </g:else>
+                </td>
+                <td>
+                    <sec:ifAllGranted roles="ROLE_ADMIN">
+                        <g:uploadForm action="uploadticket" class="pull-right">
+                            <input id="ticket" type="file" class="file" name="ticket" data-show-preview="false"
+                                   data-show-upload="false" data-show-caption="false">
+                            <input type="submit" class="btn btn-xs btn-success"/>
+                        </g:uploadForm>
+
+                    </sec:ifAllGranted>
+                </td>
+            </tr>
+            <tr>
                 <td><strong><g:message code="session.gains.label"
                                        default="Gains"/></strong></td>
                 <td>
