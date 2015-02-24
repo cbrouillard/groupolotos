@@ -160,7 +160,7 @@
         </div>
 
         <table class="table">
-            <g:each in="${sessionInstance.players}" var="player">
+            <g:each in="${sessionInstance.players.sort( {it.firstname})}" var="player">
                 <tr>
                     <td>${player.firstname} ${player.lastname}</td>
                     <sec:ifAllGranted roles="ROLE_ADMIN">
@@ -212,7 +212,7 @@
 
             <g:set var="size" value="${allPlayers?.size()}"/>
             <g:set var="counter" value="${0}"/>
-            <g:each in="${allPlayers}" var="player" status="index">
+            <g:each in="${allPlayers.sort({it.firstname})}" var="player" status="index">
                 <g:if test="${counter == 0}">
                     <div class="row-fluid">
                 </g:if>
