@@ -54,6 +54,38 @@ class SessionController {
                                               bank                : bank]
     }
 
+    @Transactional
+    @Secured(['ROLE_ADMIN'])
+    def uploadticket() {
+        def session = Session.get(params.sessionId)
+        if (session) {
+
+            def file = request.getFile("ticket")
+            session.proofTicket = file.getBytes()
+
+            session.save flush: true
+            redirect action: 'show', id: session.id
+            return
+        }
+
+        redirect action: 'index'
+        return
+    }
+
+    @Secured(['ROLE_ADMIN'])
+    def downloadticket() {
+        def session = Session.get(params.id)
+        if (session) {
+
+            response.setContentType("application/octet-stream") // or or image/JPEG or text/xml or whatever type the file is
+            response.setHeader("Content-disposition", "attachment;filename=\"${session.name}_ticket.pdf\"")
+            response.outputStream << session.proofTicket
+            return
+        }
+        redirect action: 'index'
+        return
+    }
+
     def show(Session sessionInstance) {
 
         def allPlayers = Player.findAll();
@@ -227,7 +259,7 @@ class SessionController {
         render view: '/mail/mail', model: [template: 'everyone', emails: emails, sessionInstance: session]
     }
 
-    def mailforgains (){
+    def mailforgains() {
         Session session = Session.get(params.id)
         def emails = session.players*.email
 

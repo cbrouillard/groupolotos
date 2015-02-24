@@ -107,6 +107,7 @@
                             <input id="ticket" type="file" class="file" name="ticket" data-show-preview="false"
                                    data-show-upload="false" data-show-caption="false">
                             <input type="submit" class="btn btn-xs btn-success"/>
+                            <g:hiddenField name="sessionId" value="${sessionInstance.id}"/>
                         </g:uploadForm>
 
                     </sec:ifAllGranted>
