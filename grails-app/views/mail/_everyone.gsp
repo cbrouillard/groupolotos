@@ -31,8 +31,8 @@
                                                                                                     controller="session"
                                                                                                     action="show"
                                                                                                     id="${sessionInstance.id}">${createLink(absolute: true, controller: 'session', action: 'show', id: sessionInstance.id)}</g:link>.<br/>
-                    La date du tirage pour cette session est prévue au <g:formatDate formatName="date.format.short"
-                                                                                     date="${sessionInstance.date}"/>. Si vous souhaitez participer, passez au bureau de l'admin Groupoloto afin de valider votre inscription.<br/>
+                    La date du tirage pour cette session est prévue le <strong><g:formatDate formatName="date.format.long"
+                                                                                     date="${sessionInstance.date}"/></strong>. Si vous souhaitez participer, passez au bureau de l'admin Groupoloto afin de valider votre inscription.<br/>
                     <br/>
                     Bientôt millionaires !
                     <br/><br/>
