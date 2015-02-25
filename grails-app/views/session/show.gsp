@@ -162,7 +162,7 @@
         <table class="table">
             <g:each in="${sessionInstance.players.sort( {it.firstname})}" var="player">
                 <tr>
-                    <td>${player.firstname} ${player.lastname}</td>
+                    <td>${player.firstname} ${player.lastname.substring(0,1)}.</td>
                     <sec:ifAllGranted roles="ROLE_ADMIN">
                         <td>${player.email}</td>
                     </sec:ifAllGranted>
