@@ -160,9 +160,14 @@
         </div>
 
         <table class="table">
-            <g:each in="${sessionInstance.players.sort( {it.firstname})}" var="player">
+            <g:each in="${sessionInstance.players.sort({ it.firstname })}" var="player">
                 <tr>
-                    <td>${player.firstname} ${player.lastname.substring(0,1)}.</td>
+                    <sec:ifAllGranted roles="ROLE_ADMIN">
+                        <td>${player.firstname} ${player.lastname}</td>
+                    </sec:ifAllGranted>
+                    <sec:ifNotGranted roles="ROLE_ADMIN">
+                        <td>${player.firstname} ${player.lastname.substring(0, 1)}.</td>
+                    </sec:ifNotGranted>
                     <sec:ifAllGranted roles="ROLE_ADMIN">
                         <td>${player.email}</td>
                     </sec:ifAllGranted>
@@ -212,7 +217,7 @@
 
             <g:set var="size" value="${allPlayers?.size()}"/>
             <g:set var="counter" value="${0}"/>
-            <g:each in="${allPlayers.sort({it.firstname})}" var="player" status="index">
+            <g:each in="${allPlayers.sort({ it.firstname })}" var="player" status="index">
                 <g:if test="${counter == 0}">
                     <div class="row-fluid">
                 </g:if>
