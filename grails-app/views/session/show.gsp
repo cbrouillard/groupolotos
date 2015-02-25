@@ -114,6 +114,13 @@
                 </td>
             </tr>
             <tr>
+                <td><strong><g:message code="session.total.bet.label"
+                                       default="Bet"/></strong></td>
+                <td><g:formatNumber number="${sessionInstance?.totalBet}" currencyCode="EUR" type="currency"/></td>
+                <td></td>
+            </tr>
+
+            <tr>
                 <td><strong><g:message code="session.gains.label"
                                        default="Gains"/></strong></td>
                 <td>

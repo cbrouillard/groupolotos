@@ -38,6 +38,11 @@ class SessionController {
             }
         }
 
+        def sessions = Session.findAllByOpen(true)
+        sessions.each {session ->
+            bank += session.totalBet
+        }
+
         def playersCount = Session.executeQuery(
                 'select count(p.id) from Session s join s.players p')[0]
 
@@ -76,7 +81,8 @@ class SessionController {
         def session = Session.get(params.id)
         if (session) {
 
-            response.setContentType("application/octet-stream") // or or image/JPEG or text/xml or whatever type the file is
+            response.setContentType("application/octet-stream")
+            // or or image/JPEG or text/xml or whatever type the file is
             response.setHeader("Content-disposition", "attachment;filename=\"${session.name}_ticket.pdf\"")
             response.outputStream << session.proofTicket
             return

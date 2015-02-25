@@ -115,6 +115,25 @@ class PlayerController {
         }
     }
 
+    @Secured(['ROLE_ADMIN'])
+    @Transactional
+    def addmoney(){
+
+        def player = Player.get(params.playerId)
+        if (!player){
+            redirect action:'index'
+            return
+        }
+
+        def currentCurrent = player.current
+        bindData(player, params, [include:["current"]])
+        player.current += currentCurrent
+        player.save flush: true
+
+        redirect action:'index'
+        return
+    }
+
     protected void notFound() {
         request.withFormat {
             form multipartForm {

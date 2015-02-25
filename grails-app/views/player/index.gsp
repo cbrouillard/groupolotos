@@ -68,13 +68,30 @@
                 </g:if>
                 <div class="col-lg-2 col-md-4 col-sm-5">
                     <div class="thumbnail panel-primary">
+
+                        <sec:ifAllGranted roles="ROLE_ADMIN">
+                            <g:form url="[resource: player, action: 'delete']" method="DELETE">
+                                <div class="btn-group pull-right">
+                                    <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </div>
+                            </g:form>
+                        </sec:ifAllGranted>
+
                         <img src="https://robohash.org/${player.firstname}${player.lastname.substring(0, 1)}"
                              width="100px"/>
 
                         <div class="caption text-center">
                             <ul class="list-group">
                                 <sec:ifAllGranted roles="ROLE_ADMIN">
-                                    <li class="list-group-item list-group-item-info"><strong>${player.firstname} ${player.lastname}</strong>
+                                    <li class="list-group-item list-group-item-info">
+                                        <g:link action="edit" controller="player"
+                                                id="${player.id}">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                            <strong>${player.firstname} ${player.lastname}</strong>
+                                        </g:link>
                                     </li>
 
                                     <li class="list-group-item">${player.email}</li>
@@ -87,24 +104,22 @@
                                         number="${player.current}" type="currency" currencyCode="EUR"/></li>
                                 <sec:ifAllGranted roles="ROLE_ADMIN">
                                     <li class="list-group-item">
-                                        <g:form url="[resource: player, action: 'delete']" method="DELETE">
-                                            <div class="btn-group" role="group">
-                                                <g:link class="btn btn-warning" action="givemoney" controller="player"
-                                                        id="${player.id}">
-                                                    <span class="glyphicon glyphicon-euro"></span>
-                                                </g:link>
 
-                                                <g:link class="btn btn-success" action="edit" controller="player"
-                                                        id="${player.id}">
-                                                    <span class="glyphicon glyphicon-edit"></span>
-                                                </g:link>
+                                        <div class="btn-group" role="group">
+                                            <g:link class="btn btn-warning" action="givemoney" controller="player"
+                                                    id="${player.id}">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                                <span class="glyphicon glyphicon-euro"></span>
+                                            </g:link>
 
-                                                <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');">
-                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                </button>
-                                            </div>
-                                        </g:form>
+                                            <button type="button" class="btn btn-success toggleAddMoneyModal"
+                                                    data-toggle="modal"
+                                                    data-target="#addMoneyModal"
+                                                    data-player-id="${player.id}">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                                <span class="glyphicon glyphicon-euro"></span>
+                                            </button>
+                                        </div>
                                     </li>
                                 </sec:ifAllGranted>
                             </ul>
@@ -129,6 +144,16 @@
 
     </div>
 </div>
+
+<g:render template="addmoney"/>
+<jq:jquery>
+
+    $(".toggleAddMoneyModal").on('click', function () {
+        var playerId = $(this).attr ("data-player-id");
+        $("#modalPlayerId").val(playerId);
+    });
+
+</jq:jquery>
 
 </body>
 </html>

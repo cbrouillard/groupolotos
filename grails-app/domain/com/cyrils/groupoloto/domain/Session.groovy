@@ -28,4 +28,8 @@ class Session {
 
     Date dateCreated
     Date lastUpdated
+
+    def getTotalBet (){
+        return players.size() * 2
+    }
 }
