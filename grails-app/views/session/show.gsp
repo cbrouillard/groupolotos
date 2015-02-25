@@ -78,11 +78,21 @@
                                 </g:link>
                             </g:if>
                             <g:else>
-                                <g:link class="btn btn-warning btn-xs" action="open" controller="session"
-                                        id="${sessionInstance.id}"><span
-                                        class="glyphicon glyphicon-play"></span>
-                                    <g:message code="session.open"/>
-                                </g:link>
+                                <div class="btn-group">
+                                    <g:link class="btn btn-warning btn-xs" action="open" controller="session"
+                                            id="${sessionInstance.id}"><span
+                                            class="glyphicon glyphicon-play"></span>
+                                        <g:message code="session.open"/>
+                                    </g:link>
+
+                                    <g:link class="btn btn-success btn-xs" controller="session" action="mailforclose"
+                                            id="${sessionInstance.id}">
+                                        <span
+                                                class="glyphicon glyphicon-phone"></span>
+                                        <g:message code="warn.close"/>
+                                    </g:link>
+
+                                </div>
                             </g:else>
                         </g:if>
                     </sec:ifAllGranted>

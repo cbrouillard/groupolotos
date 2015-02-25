@@ -264,6 +264,7 @@ class SessionController {
         render view: '/mail/mail', model: [template: 'everyone', emails: emails, sessionInstance: session]
     }
 
+    @Secured(['ROLE_ADMIN'])
     def mailforgains() {
         Session session = Session.get(params.id)
         def emails = session.players*.email
@@ -274,6 +275,19 @@ class SessionController {
         }
 
         render view: '/mail/mail', model: [template: 'gains', emails: emails, sessionInstance: session]
+    }
+
+    @Secured(['ROLE_ADMIN'])
+    def mailforclose (){
+        Session session = Session.get(params.id)
+        def emails = session.players*.email
+
+        if (!session || !emails) {
+            redirect(action: 'index')
+            return
+        }
+
+        render view: '/mail/mail', model: [template: 'closesession', emails: emails, sessionInstance: session]
     }
 
     protected void notFound() {
