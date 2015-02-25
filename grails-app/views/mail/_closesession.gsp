@@ -15,7 +15,7 @@
                 <strong><g:message code="mail.subject"/></strong>
             </td>
             <td>
-                <g:message code="mail.gains.subject" args="[sessionInstance.name]"/>
+                <g:message code="mail.closed.subject" args="[sessionInstance.name]"/>
             </td>
         </tr>
 
