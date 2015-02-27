@@ -38,9 +38,12 @@ class SessionController {
             }
         }
 
-        def sessions = Session.findAllByOpen(true)
-        sessions.each {session ->
-            bank += session.totalBet
+        // If bank is null, nothing to compute
+        if (bank != null) {
+            def sessions = Session.findAllByOpen(true)
+            sessions.each {session ->
+                bank += session.totalBet
+            }
         }
 
         def playersCount = Session.executeQuery(
