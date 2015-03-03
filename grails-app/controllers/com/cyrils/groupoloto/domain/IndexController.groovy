@@ -33,4 +33,9 @@ class IndexController {
             redirect controller: 'groupo', action: 'create'
         }
     }
+
+    def denied() {
+        // Access denied
+
+    }
 }

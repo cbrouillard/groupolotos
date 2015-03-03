@@ -12,25 +12,10 @@ class SessionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    // Using Cookie service DI
-    def cookieService
-
-    // Must have a groupoid in cookie (mandatory)
-    // TODO - check admin business right on this groupo!
-    def beforeInterceptor = {
-        def groupoid = cookieService.getCookie("groupoid")
-        println "Tracing action ${actionUri} groupoid: ${groupoid}"
-        if (!groupoid) {
-            // No groupoid => go to index
-            redirect controller: 'index', action: 'index'
-            return false;
-        }
-        return true;
-    }
-
     def index(Integer max) {
         // How to put this line in interceptor
-        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        Groupo groupo = params.groupo
+        println "Tracing groupo: ${groupo}"
 
         params.max = Math.min(max ?: 10, 100)
         params.sort = params.sort ?: "dateCreated"
@@ -69,11 +54,11 @@ class SessionController {
         }
 
         def playersCount = Session.executeQuery(
-                'select count(p.id) from Session s join s.players p')[0]
+                'select count(p.id) from Session s join s.players p where s.groupo = :groupo', ['groupo': groupo])[0]
 
         def graphResult = Session.executeQuery(
-                'select s.name, count(p) * 2, s.gains from Session s join s.players p group by s.name, s.gains, s.date order by s.date asc',
-                [max: 10, offset: 0]
+                'select s.name, count(p) * 2, s.gains from Session s join s.players p where s.groupo = :groupo group by s.name, s.gains, s.date  order by s.date asc',
+                [max: 10, offset: 0, 'groupo': groupo]
         )
 
         respond Session.findAllByGroupo(groupo), model: [sessionInstanceCount: Session.countByGroupo(groupo),
@@ -81,7 +66,8 @@ class SessionController {
                                               totalSum            : playersCount * 2,
                                               avgGains            : gainsAvg,
                                               graphData           : graphResult,
-                                              bank                : bank]
+                                              bank                : bank,
+                                              groupo              : groupo]
     }
 
     @Transactional
@@ -118,7 +104,7 @@ class SessionController {
 
     def show(Session sessionInstance) {
         // How to put this line in interceptor
-        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        Groupo groupo = params.groupo
 
         def allPlayers = Player.findAllByGroupo(groupo);
         allPlayers.removeAll(sessionInstance.players)
@@ -253,7 +239,7 @@ class SessionController {
             }
         }
 
-        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        Groupo groupo = params.groupo
         sessionInstance.groupo = groupo;
         sessionInstance.save flush: true
 

@@ -14,8 +14,7 @@
     <div class="col-xs-12">
         <div>
             <h1><g:message
-                    code="session.list"/> <small>Toutes vos sessions de jeu en cours ou terminées sont ici.</small>
-                <g:cookie name="groupoid" />
+                    code="session.list"/> ${groupo.name} <small>Toutes vos sessions de jeu en cours ou terminées sont ici.</small>
             </h1>
             <hr/>
         </div>

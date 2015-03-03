@@ -14,28 +14,24 @@ class SuperUserController {
 
     def springSecurityService
 
-    def cookieService
-
-    // Must have a groupoid in cookie (mandatory)
+    // Must have admin access to this groupo
     def beforeInterceptor = {
-        def groupoid = cookieService.getCookie("groupoid")
-        println "Tracing action ${actionUri} groupoid: ${groupoid}"
-        if (!groupoid) {
-            // No groupoid => go to index
-            redirect controller: 'index', action: 'index'
-            return false;
+        Groupo groupo = params.groupo
+
+        SuperUser user = springSecurityService.currentUser
+        if (user.groupo.id != groupo.id) {
+            redirect controller: 'index', action: 'denied'
         }
         return true;
     }
 
     def index(Integer max) {
-        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
-        Map<String, Object> queryParams = ['groupo': groupo]
+        Groupo groupo = params.groupo
 
         params.max = Math.min(max ?: 6, 100)
         params.sort = "username"
         params.order = "asc"
-        respond SuperUser.findAllWhere(queryParams, params), model:[superUserInstanceCount: SuperUser.countByGroupo(groupo)]
+        respond SuperUser.findAllWhere(['groupo': groupo], params), model:[superUserInstanceCount: SuperUser.countByGroupo(groupo)]
     }
 
     @Secured(['ROLE_SUPERADMIN'])
@@ -88,7 +84,7 @@ class SuperUserController {
             return
         }
 
-        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        Groupo groupo = params.groupo
         superUserInstance.groupo = groupo
 
         superUserInstance.save flush:true
