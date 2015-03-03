@@ -12,13 +12,33 @@ class SessionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    // Using Cookie service DI
+    def cookieService
+
+    // Must have a groupoid in cookie (mandatory)
+    // TODO - check admin business right on this groupo!
+    def beforeInterceptor = {
+        def groupoid = cookieService.getCookie("groupoid")
+        println "Tracing action ${actionUri} groupoid: ${groupoid}"
+        if (!groupoid) {
+            // No groupoid => go to index
+            redirect controller: 'index', action: 'index'
+            return false;
+        }
+        return true;
+    }
+
     def index(Integer max) {
+        // How to put this line in interceptor
+        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+
         params.max = Math.min(max ?: 10, 100)
         params.sort = params.sort ?: "dateCreated"
         params.order = params.order ?: "desc"
 
         def c = Session.createCriteria()
         def gainsSum = c.get {
+            eq("groupo", groupo)
             projections {
                 sum "gains"
             }
@@ -26,6 +46,7 @@ class SessionController {
 
         def c2 = Session.createCriteria()
         def gainsAvg = c2.get {
+            eq("groupo", groupo)
             projections {
                 avg "gains"
             }
@@ -33,6 +54,7 @@ class SessionController {
 
         def c3 = Player.createCriteria()
         def bank = c3.get {
+            eq("groupo", groupo)
             projections {
                 sum "current"
             }
@@ -40,7 +62,7 @@ class SessionController {
 
         // If bank is null, nothing to compute
         if (bank != null) {
-            def sessions = Session.findAllByOpen(true)
+            def sessions = Session.findAllByOpenAndGroupo(true, groupo)
             sessions.each {session ->
                 bank += session.totalBet
             }
@@ -54,7 +76,7 @@ class SessionController {
                 [max: 10, offset: 0]
         )
 
-        respond Session.list(params), model: [sessionInstanceCount: Session.count(),
+        respond Session.findAllByGroupo(groupo), model: [sessionInstanceCount: Session.countByGroupo(groupo),
                                               totalGains          : gainsSum,
                                               totalSum            : playersCount * 2,
                                               avgGains            : gainsAvg,
@@ -95,8 +117,10 @@ class SessionController {
     }
 
     def show(Session sessionInstance) {
+        // How to put this line in interceptor
+        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
 
-        def allPlayers = Player.findAll();
+        def allPlayers = Player.findAllByGroupo(groupo);
         allPlayers.removeAll(sessionInstance.players)
 
         [sessionInstance: sessionInstance, allPlayers: allPlayers]
@@ -104,7 +128,8 @@ class SessionController {
 
     @Secured(['ROLE_ADMIN'])
     def create() {
-        respond new Session(params)
+        Session sessionInstance = new Session(params)
+        respond sessionInstance
     }
 
     @Secured(['ROLE_ADMIN'])
@@ -219,10 +244,17 @@ class SessionController {
         sessionInstance.date = sdf.parse(params.dateToParse)
 
         if (sessionInstance.hasErrors()) {
-            respond sessionInstance.errors, view: 'create'
-            return
+            if (sessionInstance.getErrors().errorCount == 1
+                    && sessionInstance.getErrors().hasFieldErrors("groupo")) {
+                // Skip this error (normal)
+            } else {
+                respond sessionInstance.errors, view: 'create'
+                return
+            }
         }
 
+        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        sessionInstance.groupo = groupo;
         sessionInstance.save flush: true
 
         request.withFormat {

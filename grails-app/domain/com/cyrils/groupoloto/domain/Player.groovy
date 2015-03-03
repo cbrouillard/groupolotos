@@ -2,6 +2,8 @@ package com.cyrils.groupoloto.domain
 
 class Player {
 
+    static belongsTo = [groupo: Groupo]
+
     String id
 
     String lastname

@@ -1,6 +1,6 @@
 package com.cyrils.groupoloto.domain.security
 
-
+import com.cyrils.groupoloto.domain.Groupo
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -14,11 +14,28 @@ class SuperUserController {
 
     def springSecurityService
 
+    def cookieService
+
+    // Must have a groupoid in cookie (mandatory)
+    def beforeInterceptor = {
+        def groupoid = cookieService.getCookie("groupoid")
+        println "Tracing action ${actionUri} groupoid: ${groupoid}"
+        if (!groupoid) {
+            // No groupoid => go to index
+            redirect controller: 'index', action: 'index'
+            return false;
+        }
+        return true;
+    }
+
     def index(Integer max) {
+        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        Map<String, Object> queryParams = ['groupo': groupo]
+
         params.max = Math.min(max ?: 6, 100)
         params.sort = "username"
         params.order = "asc"
-        respond SuperUser.list(params), model:[superUserInstanceCount: SuperUser.count()]
+        respond SuperUser.findAllWhere(queryParams, params), model:[superUserInstanceCount: SuperUser.countByGroupo(groupo)]
     }
 
     @Secured(['ROLE_SUPERADMIN'])
@@ -54,8 +71,13 @@ class SuperUserController {
         }
 
         if (superUserInstance.hasErrors()) {
-            respond superUserInstance.errors, view:'create'
-            return
+            if (superUserInstance.getErrors().errorCount == 1
+                    && superUserInstance.getErrors().hasFieldErrors("groupo")) {
+                // Skip this error
+            } else {
+                respond superUserInstance.errors, view: 'create'
+                return
+            }
         }
 
         def pass = params.password
@@ -65,6 +87,9 @@ class SuperUserController {
             redirect action:'index'
             return
         }
+
+        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        superUserInstance.groupo = groupo
 
         superUserInstance.save flush:true
 

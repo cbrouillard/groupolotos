@@ -1,8 +1,11 @@
 package com.cyrils.groupoloto.domain
 
+
 class Session {
 
     static hasMany = [players: Player]
+
+    static belongsTo = [groupo: Groupo]
 
     String id
 
@@ -12,14 +15,16 @@ class Session {
     Boolean open = true
     byte[] proofTicket
     Double gains = 0D;
+    Double playerPrice = 2D;
 
     static constraints = {
         date nullable: false
         open nullable: false
         // Limit upload file size to 5MB
-        proofTicket maxSize: 1024 * 1024 * 5, nullable:true
+        proofTicket maxSize: 1024 * 1024 * 5, nullable: true
         gains nullable: false
         name nullable: false
+        playerPrice nullable: true, defaultValue: 2D
     }
 
     static mapping = {
@@ -30,6 +35,6 @@ class Session {
     Date lastUpdated
 
     def getTotalBet (){
-        return players.size() * 2
+        return players.size() * playerPrice
     }
 }

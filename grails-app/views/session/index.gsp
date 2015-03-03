@@ -15,6 +15,7 @@
         <div>
             <h1><g:message
                     code="session.list"/> <small>Toutes vos sessions de jeu en cours ou terminées sont ici.</small>
+                <g:cookie name="groupoid" />
             </h1>
             <hr/>
         </div>
@@ -34,7 +35,7 @@
         <table class="table">
             <tr>
                 <td><strong>Nombre total de sessions</strong></td>
-                <td>${com.cyrils.groupoloto.domain.Session.count()}</td>
+                <td>${sessionInstanceCount}</td>
             </tr>
             <tr class="warning">
                 <td><strong>Banque, somme des en-cours</strong></td>

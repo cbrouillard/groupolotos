@@ -10,11 +10,30 @@ class PlayerController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    // Using Cookie service DI
+    def cookieService
+
+    // Must have a groupoid in cookie (mandatory)
+    // TODO - check admin business right on this groupo!
+    def beforeInterceptor = {
+        def groupoid = cookieService.getCookie("groupoid")
+        println "Tracing action ${actionUri} groupoid: ${groupoid}"
+        if (!groupoid) {
+            // No groupoid => go to index
+            redirect controller: 'index', action: 'index'
+            return false;
+        }
+        return true;
+    }
+
     def index(Integer max) {
+        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        Map<String, Object> queryParams = ['groupo': groupo]
+
         params.max = Math.min(max ?: 24, 100)
         params.sort = params.sort?:"firstname"
         params.order = params.order?:"asc"
-        respond Player.list(params), model: [playerInstanceCount: Player.count()]
+        respond Player.findAllWhere(queryParams, params), model: [playerInstanceCount: Player.countByGroupo(groupo)]
     }
 
     def show(Player playerInstance) {
@@ -53,9 +72,18 @@ class PlayerController {
         }
 
         if (playerInstance.hasErrors()) {
-            respond playerInstance.errors, view: 'create'
-            return
+            if (playerInstance.getErrors().errorCount == 1
+                    && playerInstance.getErrors().hasFieldErrors("groupo")) {
+                // Skip this error
+            } else {
+                respond playerInstance.errors, view: 'create'
+                return
+            }
         }
+
+
+        Groupo groupo = Groupo.findById(cookieService.getCookie("groupoid"))
+        playerInstance.groupo = groupo
 
         playerInstance.save flush: true
 

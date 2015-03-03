@@ -1,10 +1,14 @@
 package com.cyrils.groupoloto.domain.security
 
+import com.cyrils.groupoloto.domain.Groupo
+
 class SuperUser {
 
 	transient springSecurityService
 
-	String username
+    static belongsTo = [groupo: Groupo]
+
+    String username
 	String password
 	boolean enabled = true
 	boolean accountExpired

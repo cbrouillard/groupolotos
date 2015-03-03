@@ -1,10 +1,22 @@
+import com.cyrils.groupoloto.domain.Groupo
 import com.cyrils.groupoloto.domain.security.Role
 import com.cyrils.groupoloto.domain.security.SuperUser
 import com.cyrils.groupoloto.domain.security.SuperUserRole
 
 class BootStrap {
 
+    static defaultGroupo = null;
+
     def init = { servletContext ->
+
+        def defaultGroupo = Groupo.findByName("_DEFAULT_");
+        if (!defaultGroupo) {
+            // Create default groupo
+            defaultGroupo = new Groupo();
+            defaultGroupo.name = "_DEFAULT_";
+            defaultGroupo.enable = true;
+            defaultGroupo.save(flush: true)
+        }
 
         def admin = SuperUser.findByUsername("admin")
         if (!admin) {
@@ -17,6 +29,7 @@ class BootStrap {
             admin.enabled = true
             admin.passwordExpired = false
             admin.username = "admin"
+            admin.groupo = defaultGroupo
 
             admin.password = "admin"
             admin.save(flush: true)
@@ -33,8 +46,8 @@ class BootStrap {
             SuperUserRole.create(admin, roleAdmin, true)
             SuperUserRole.create(admin, roleSuperAdmin, true)
         }
-
     }
+
     def destroy = {
     }
 }
