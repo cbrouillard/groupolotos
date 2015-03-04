@@ -12,8 +12,6 @@ class GroupoCookieFilters {
 
     def grailsApplication
 
-    def applicationContext
-
     def _checkGroupoCookie(actionUri, params, controllerName, actionName) {
         def groupoid = cookieService.getCookie("groupoid")
         println "Tracing action ${actionUri} groupoid: ${groupoid}"
@@ -69,12 +67,6 @@ class GroupoCookieFilters {
                     return false;
                 }
             }
-            after = { Map model ->
-
-            }
-            afterView = { Exception e ->
-
-            }
         }
         all(controller:'session', action:'*') {
             before = {
@@ -85,12 +77,6 @@ class GroupoCookieFilters {
                     return false;
                 }
             }
-            after = { Map model ->
-
-            }
-            afterView = { Exception e ->
-
-            }
         }
         all(controller:'superUser', action:'*') {
             before = {
@@ -100,12 +86,6 @@ class GroupoCookieFilters {
                     redirect controller: 'index', action: 'index'
                     return false;
                 }
-            }
-            after = { Map model ->
-
-            }
-            afterView = { Exception e ->
-
             }
         }
     }

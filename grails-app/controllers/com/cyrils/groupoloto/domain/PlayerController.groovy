@@ -64,7 +64,6 @@ class PlayerController {
             }
         }
 
-
         Groupo groupo = params.groupo
         playerInstance.groupo = groupo
 
@@ -113,7 +112,7 @@ class PlayerController {
     @Transactional
     def delete(Player playerInstance) {
 
-        if (playerInstance == null) {
+        if (playerInstance == null || playerInstance.groupo != params.groupo) {
             notFound()
             return
         }
@@ -133,7 +132,7 @@ class PlayerController {
     @Transactional
     def addmoney(){
 
-        def player = Player.get(params.playerId)
+        def player = Player.findByIdAndGroupo(params.playerId, params.groupo)
         if (!player){
             redirect action:'index'
             return

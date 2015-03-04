@@ -19,7 +19,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><span
                                         class="glyphicon glyphicon-euro"></span></span>
-                                <g:field type="number" name="current" required="" class="form-control" pattern="^([0-9])*"/>
+                                <g:field type="" name="current" required="" class="form-control" pattern="^(?=.+)(?:[1-9]\\d*|0)?(?:,\\d+)?\$"/>
                             </div>
                             <div class="help-block with-errors"></div>
                         </div>

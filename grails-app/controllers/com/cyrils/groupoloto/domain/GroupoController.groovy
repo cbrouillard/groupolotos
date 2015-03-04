@@ -10,7 +10,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class GroupoController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT"] // delete: "DELETE"
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -20,7 +20,7 @@ class GroupoController {
     def show(Groupo groupoInstance) {
         respond groupoInstance
     }
-
+/*
     def create() {
         respond new Groupo(params)
     }
@@ -69,7 +69,7 @@ class GroupoController {
             '*' { respond groupoInstance, [status: CREATED] }
         }
     }
-
+*/
     def edit(Groupo groupoInstance) {
         respond groupoInstance
     }
@@ -97,6 +97,7 @@ class GroupoController {
         }
     }
 
+    /*
     @Transactional
     def delete(Groupo groupoInstance) {
 
@@ -115,6 +116,7 @@ class GroupoController {
             '*'{ render status: NO_CONTENT }
         }
     }
+    */
 
     protected void notFound() {
         request.withFormat {
