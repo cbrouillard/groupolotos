@@ -1,4 +1,4 @@
-<g:form url="[action: 'addmoney']" class="form-horizontal" data-toggle="validator">
+<g:form controller="player" action="addmoney" class="form-horizontal" data-toggle="validator">
     <div class="modal fade" id="addMoneyModal" tabindex="-1" role="dialog" aria-labelledby="ourAddMoneyModal"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -13,20 +13,43 @@
 
                     <div class="form-group">
 
-                        <label for="current" class="col-sm-3 control-label"><g:message code="player.add.to.current.label"/> *</label>
+                        <label for="current" class="col-sm-3 control-label"><g:message
+                                code="player.add.to.current.label"/> *</label>
 
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <span class="input-group-addon"><span
                                         class="glyphicon glyphicon-euro"></span></span>
-                                <g:field type="number" name="current" required="" class="form-control" pattern="^([0-9])*"/>
+                                <g:field type="number" name="current" required="" class="form-control"
+                                         pattern="^([0-9])*" value="2" autofocus=""/>
                             </div>
+
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+
+
+                        <div class="col-sm-12">
+                            <label for="current" class="control-label"><g:message
+                                    code="player.automatically.play.for.next"/></label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><span
+                                        class="glyphicon glyphicon-euro"></span></span>
+                                <g:field type="number" name="automationForNextGame" required="" class="form-control"
+                                         pattern="^([0-9])*" value="0"/>
+                            </div>
+
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
 
 
                     <g:hiddenField name="playerId" id="modalPlayerId"/>
+                    <g:hiddenField name="sessionId" id="modalSessionId"/>
+                    <g:hiddenField name="redirection" id="redirection"/>
 
                 </div>
 

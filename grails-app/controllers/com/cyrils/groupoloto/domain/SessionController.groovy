@@ -220,6 +220,15 @@ class SessionController {
             return
         }
 
+        // chercher les joueurs qui ont "Rejoindre auto"
+        def players = Player.findByAutomationForNextGameGreaterThan (0);
+        if (players){
+            players.each {autoPlayer ->
+                sessionInstance.addToPlayers(autoPlayer)
+                autoPlayer.automationForNextGame -= 1;
+            }
+        }
+
         sessionInstance.save flush: true
 
         request.withFormat {

@@ -100,8 +100,18 @@
                                     <li class="list-group-item list-group-item-info"><strong>${player.firstname} ${player.lastname.substring(0, 1)}.</strong>
                                     </li>
                                 </sec:ifNotGranted>
-                                <li class="list-group-item">En-cours : <g:formatNumber
-                                        number="${player.current}" type="currency" currencyCode="EUR"/></li>
+                                <li class="list-group-item">
+                                    <p>En-cours : <g:formatNumber
+                                            number="${player.current}" type="currency" currencyCode="EUR"/></p>
+
+                                    <p>
+                                        <g:if test="${player.automationForNextGame}">
+                                            Automatique : ${player.automationForNextGame}
+                                        </g:if>
+                                        <g:else>&nbsp;</g:else>
+                                    </p>
+                                </li>
+
                                 <sec:ifAllGranted roles="ROLE_ADMIN">
                                     <li class="list-group-item">
 

@@ -254,8 +254,9 @@
                                                 <span class="glyphicon glyphicon-menu-left"></span> <strong>${player.firstname} ${player.lastname}</strong>
                                             </g:link>
                                         </li>
+                                        <li class="list-group-item">En-cours : <g:formatNumber
+                                                number="${player.current}" type="currency" currencyCode="EUR"/></li>
                                         <li class="list-group-item">
-
                                             <g:if test="${player.current < 2}">
                                                 Pour jouer : <g:formatNumber
                                                     number="${2 - player.current}" type="currency" currencyCode="EUR"/>
@@ -264,6 +265,20 @@
                                                 En-cours suffisant
                                             </g:else>
                                         </li>
+                                        <sec:ifAllGranted roles="ROLE_ADMIN">
+                                            <li class="list-group-item">
+
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-success toggleAddMoneyModal"
+                                                            data-toggle="modal"
+                                                            data-target="#addMoneyModal"
+                                                            data-player-id="${player.id}" data-redirect-to="session" data-session-id="${sessionInstance.id}">
+                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                        <span class="glyphicon glyphicon-euro"></span>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        </sec:ifAllGranted>
                                     </ul>
 
                                 </g:if>
@@ -312,6 +327,16 @@
 </div>
 
 <g:render template="savegains"/>
+<g:render template="/player/addmoney"/>
+<jq:jquery>
+
+    $(".toggleAddMoneyModal").on('click', function () {
+        $("#modalPlayerId").val($(this).attr ("data-player-id"));
+        $("#redirection").val ($(this).attr("data-redirect-to"));
+        $("#modalSessionId").val($(this).attr("data-session-id"));
+    });
+
+</jq:jquery>
 
 </body>
 </html>

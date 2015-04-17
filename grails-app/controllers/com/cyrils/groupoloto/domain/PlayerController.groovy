@@ -12,8 +12,8 @@ class PlayerController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 24, 100)
-        params.sort = params.sort?:"firstname"
-        params.order = params.order?:"asc"
+        params.sort = params.sort ?: "firstname"
+        params.order = params.order ?: "asc"
         respond Player.list(params), model: [playerInstanceCount: Player.count()]
     }
 
@@ -32,7 +32,7 @@ class PlayerController {
         Player player = Player.get(params.id)
         if (player) {
 
-            if (player.current != 0D){
+            if (player.current != 0D) {
                 // todo envoyer un mail
             }
 
@@ -117,20 +117,24 @@ class PlayerController {
 
     @Secured(['ROLE_ADMIN'])
     @Transactional
-    def addmoney(){
+    def addmoney() {
 
         def player = Player.get(params.playerId)
-        if (!player){
-            redirect action:'index'
+        if (!player) {
+            redirect action: 'index'
             return
         }
 
         def currentCurrent = player.current
-        bindData(player, params, [include:["current"]])
+        bindData(player, params, [include: ["current", "automationForNextGame"]])
         player.current += currentCurrent
         player.save flush: true
 
-        redirect action:'index'
+        if (params.redirection) {
+            redirect controller: 'session', action: 'show', id: params.sessionId
+        } else {
+            redirect action: 'index'
+        }
         return
     }
 

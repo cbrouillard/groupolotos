@@ -10,11 +10,14 @@ class Player {
 
     Double current = 0D
 
+    Integer automationForNextGame = 0
+
     static constraints = {
-        lastname nullable:false, blank:false
-        firstname nullable:false, blank:false
-        email nullable:false, blank:false, email: true, unique: true
-        current nullable:false, defaultValue: 0D
+        lastname nullable: false, blank: false
+        firstname nullable: false, blank: false
+        email nullable: false, blank: false, email: true, unique: true
+        current nullable: false, defaultValue: 0D
+        automationForNextGame nullable: true, defaultValue: 0
     }
 
     static mapping = {
