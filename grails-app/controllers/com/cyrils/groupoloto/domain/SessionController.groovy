@@ -229,6 +229,7 @@ class SessionController {
             players.each {autoPlayer ->
                 sessionInstance.addToPlayers(autoPlayer)
                 autoPlayer.automationForNextGame -= 1;
+                autoPlayer.current -= 2;
             }
         }
 
