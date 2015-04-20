@@ -50,8 +50,7 @@ class SessionController {
                 'select count(p.id) from Session s join s.players p')[0]
 
         def graphResult = Session.executeQuery(
-                'select s.name, count(p) * 2, s.gains from Session s join s.players p group by s.name, s.gains, s.date order by s.date desc',
-                [max: 10, offset: 0]
+                'select s.name, count(p) * 2, s.gains from Session s left join s.players p group by s.name, s.gains, s.date order by s.date desc', [max: 10]
         ).reverse()
 
         respond Session.list(params), model: [sessionInstanceCount: Session.count(),
