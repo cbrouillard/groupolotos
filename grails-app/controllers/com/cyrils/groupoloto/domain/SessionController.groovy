@@ -41,7 +41,7 @@ class SessionController {
         // If bank is null, nothing to compute
         if (bank != null) {
             def sessions = Session.findAllByOpen(true)
-            sessions.each {session ->
+            sessions.each { session ->
                 bank += session.totalBet
             }
         }
@@ -50,9 +50,9 @@ class SessionController {
                 'select count(p.id) from Session s join s.players p')[0]
 
         def graphResult = Session.executeQuery(
-                'select s.name, count(p) * 2, s.gains from Session s join s.players p group by s.name, s.gains, s.date order by s.date asc',
+                'select s.name, count(p) * 2, s.gains from Session s join s.players p group by s.name, s.gains, s.date order by s.date desc',
                 [max: 10, offset: 0]
-        )
+        ).reverse()
 
         respond Session.list(params), model: [sessionInstanceCount: Session.count(),
                                               totalGains          : gainsSum,
@@ -224,9 +224,9 @@ class SessionController {
         }
 
         // chercher les joueurs qui ont "Rejoindre auto"
-        def players = Player.findByAutomationForNextGameGreaterThan (0);
-        if (players){
-            players.each {autoPlayer ->
+        def players = Player.findAllByAutomationForNextGameGreaterThan(0);
+        if (players) {
+            players.each { autoPlayer ->
                 sessionInstance.addToPlayers(autoPlayer)
                 autoPlayer.automationForNextGame -= 1;
                 autoPlayer.current -= 2;
@@ -291,7 +291,7 @@ class SessionController {
     }
 
     @Secured(['ROLE_ADMIN'])
-    def mailforclose (){
+    def mailforclose() {
         Session session = Session.get(params.id)
         def emails = session.players*.email
 
