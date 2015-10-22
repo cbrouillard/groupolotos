@@ -17,6 +17,7 @@
         <datasource-map>
           <unit-entry name="Gorm" />
           <unit-entry name="hibernate.cfg.xml" />
+          <unit-entry name="target:work:plugins:hibernate4-4.3.6.1:src:java:hibernate.cfg.xml" />
         </datasource-map>
         <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/target/work/plugins/hibernate4-4.3.6.1/src/java/hibernate.cfg.xml" />
@@ -129,6 +130,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="groupolotos-grailsPlugins" />
+    <orderEntry type="library" name="grails-2.4.4 (3)" level="application" />
   </component>
 </module>
 

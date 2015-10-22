@@ -40,6 +40,20 @@
                 <td><strong>Banque, somme des en-cours</strong></td>
                 <td><g:formatNumber number="${bank}" type="currency" currencyCode="EUR"/></td>
             </tr>
+            <g:if test="${group.leftOver}">
+                <tr class="danger">
+                    <td><strong>Banque, reste des anciens joueurs</strong></td>
+                    <td><g:formatNumber number="${group.leftOver}" type="currency" currencyCode="EUR"/>
+
+                        <sec:ifAllGranted roles="ROLE_ADMIN">
+                            <g:link controller="player" action="redistributeOldCash" class="btn btn-xs btn-default">
+                                <span class="glyphicon glyphicon-share"/>
+                            </g:link>
+                        </sec:ifAllGranted>
+
+                    </td>
+                </tr>
+            </g:if>
             <tr>
                 <td><strong>Somme totale engagée</strong></td>
                 <td><g:formatNumber number="${totalSum}" type="currency" currencyCode="EUR"/></td>

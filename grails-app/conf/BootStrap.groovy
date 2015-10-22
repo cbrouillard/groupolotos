@@ -1,3 +1,4 @@
+import com.cyrils.groupoloto.domain.Bank
 import com.cyrils.groupoloto.domain.security.Role
 import com.cyrils.groupoloto.domain.security.SuperUser
 import com.cyrils.groupoloto.domain.security.SuperUserRole
@@ -32,6 +33,14 @@ class BootStrap {
             }
             SuperUserRole.create(admin, roleAdmin, true)
             SuperUserRole.create(admin, roleSuperAdmin, true)
+        }
+
+        def banks = Bank.list()
+        if (!banks){
+            def bank = new Bank()
+            bank.name = "Eileo"
+            bank.leftOver = 0
+            bank.save(flush: true)
         }
 
     }

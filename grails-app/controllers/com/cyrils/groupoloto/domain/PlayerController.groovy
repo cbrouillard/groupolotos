@@ -14,7 +14,7 @@ class PlayerController {
         params.max = Math.min(max ?: 24, 100)
         params.sort = params.sort ?: "firstname"
         params.order = params.order ?: "asc"
-        respond Player.list(params), model: [playerInstanceCount: Player.count()]
+        respond Player.findAllByDeleted(false, params), model: [playerInstanceCount: Player.countByDeleted(false)]
     }
 
     def show(Player playerInstance) {
@@ -41,6 +41,25 @@ class PlayerController {
         }
 
         redirect action: 'index'
+        return
+    }
+
+    @Secured(['ROLE_ADMIN'])
+    @Transactional
+    def redistributeOldCash (){
+        def eileo = Bank.findByName ("Eileo")
+        def players = Player.findAllByDeleted(false)
+
+        def amount = eileo.leftOver / players.size()
+        players.each {player ->
+            player.current += amount
+            player.save()
+        }
+
+        eileo.leftOver = 0
+        eileo.save(flush: true)
+
+        redirect controller: 'session', action: 'index'
         return
     }
 
@@ -104,7 +123,15 @@ class PlayerController {
             return
         }
 
-        playerInstance.delete flush: true
+        // en dur pour le moment.
+        def eileo = Bank.findByName ("Eileo")
+        eileo.leftOver += playerInstance.current
+        eileo.save(flush: true)
+
+        // effacement virtuel
+        playerInstance.deleted = true
+        playerInstance.current = 0
+        playerInstance.save(flush: true)
 
         request.withFormat {
             form multipartForm {

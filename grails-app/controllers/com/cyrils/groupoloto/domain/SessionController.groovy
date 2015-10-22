@@ -31,12 +31,7 @@ class SessionController {
             }
         }
 
-        def c3 = Player.createCriteria()
-        def bank = c3.get {
-            projections {
-                sum "current"
-            }
-        }
+        def bank = Player.executeQuery('select sum(p.current) from Player p where p.deleted = false')[0]
 
         // If bank is null, nothing to compute
         if (bank != null) {
@@ -49,6 +44,8 @@ class SessionController {
         def playersCount = Session.executeQuery(
                 'select count(p.id) from Session s join s.players p')[0]
 
+        def group = Bank.findByName("Eileo")
+
         def graphResult = Session.executeQuery(
                 'select s.name, count(p) * 2, s.gains from Session s left join s.players p group by s.name, s.gains, s.date order by s.date desc', [max: 10]
         ).reverse()
@@ -58,7 +55,8 @@ class SessionController {
                                               totalSum            : playersCount * 2,
                                               avgGains            : gainsAvg,
                                               graphData           : graphResult,
-                                              bank                : bank]
+                                              bank                : bank,
+                                              group               : group]
     }
 
     @Transactional
