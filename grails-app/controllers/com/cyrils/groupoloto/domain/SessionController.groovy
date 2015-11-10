@@ -93,7 +93,7 @@ class SessionController {
 
     def show(Session sessionInstance) {
 
-        def allPlayers = Player.findAll();
+        def allPlayers = Player.findAllByDeleted(false);
         allPlayers.removeAll(sessionInstance.players)
 
         [sessionInstance: sessionInstance, allPlayers: allPlayers]
@@ -264,7 +264,7 @@ class SessionController {
     @Secured(['ROLE_ADMIN'])
     def mailwarneveryone() {
         Session session = Session.get(params.id)
-        def emails = Player.executeQuery("select p.email from Player p")
+        def emails = Player.executeQuery("select p.email from Player p where p.deleted = false")
 
         if (!session || !emails) {
             redirect(action: 'index')
